@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:logger/web.dart';
 import 'package:practice_app/core/injections/injections.dart';
+import 'package:practice_app/core/routing/app_router.dart';
+
 
 
 void main() async {
+
+  Logger logger = Logger();
 
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -11,10 +16,13 @@ void main() async {
     await Injections().configureDependencies();
 
   } catch (e) {
-    print('troubles');
-  };
+
+    logger.e(e);
+
+  }
   
-  runApp(const MainApp());
+  runApp(const MainApp()); 
+
 }
 
 class MainApp extends StatelessWidget {
@@ -22,12 +30,14 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
-        ),
-      ),
+
+    final _AppRouter = AppRouter();
+
+    return MaterialApp.router(
+      title: 'App',
+      routerConfig: _AppRouter.config(),
     );
+
   }
+
 }
