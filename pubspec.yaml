@@ -15,13 +15,11 @@ dependencies:
   equatable: any  
   dio: any
   firebase_core: any 
-  cloud_firestore: any
-
+  firebase_auth: any
   get_it: any
   flutter_svg: any 
   cupertino_icons: any
   logger: any 
-
   flutter_dotenv: any 
 
   
@@ -37,4 +35,3 @@ flutter:
   uses-material-design: true
   assets:
     - assets/svgs/
-    - .env
