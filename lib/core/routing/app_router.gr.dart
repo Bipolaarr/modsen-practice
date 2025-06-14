@@ -15,6 +15,12 @@ abstract class _$AppRouter extends RootStackRouter {
 
   @override
   final Map<String, PageFactory> pagesMap = {
+    HomeRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const HomePage(),
+      );
+    },
     SplashRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -24,16 +30,30 @@ abstract class _$AppRouter extends RootStackRouter {
     SignupRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const SignupPage(),
+        child: const SignUpPage(),
       );
     },
-    SigninRoute.name: (routeData) {
+    SignInRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const SigninPage(),
+        child: const SignInPage(),
       );
     },
   };
+}
+
+/// generated route for
+/// [HomePage]
+class HomeRoute extends PageRouteInfo<void> {
+  const HomeRoute({List<PageRouteInfo>? children})
+      : super(
+          HomeRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'HomeRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
 }
 
 /// generated route for
@@ -65,15 +85,15 @@ class SignupRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [SigninPage]
-class SigninRoute extends PageRouteInfo<void> {
-  const SigninRoute({List<PageRouteInfo>? children})
+/// [SignInPage]
+class SignInRoute extends PageRouteInfo<void> {
+  const SignInRoute({List<PageRouteInfo>? children})
       : super(
-          SigninRoute.name,
+          SignInRoute.name,
           initialChildren: children,
         );
 
-  static const String name = 'SigninRoute';
+  static const String name = 'SignInRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }

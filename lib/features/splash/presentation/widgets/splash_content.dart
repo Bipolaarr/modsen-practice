@@ -70,7 +70,7 @@ class SplashContent extends StatelessWidget {
                               SplashButton(
                                 backgroundColor: Constants.formBlueColor,
                                 label: 'Sign In',
-                                onPressed: () => context.router.replace(const SigninRoute())
+                                onPressed: () => context.router.replace(const SignInRoute())
                               ),
                               const SizedBox(height: 20),
                               SplashButton(

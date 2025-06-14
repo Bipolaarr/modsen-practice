@@ -20,7 +20,7 @@ dependencies:
   flutter_svg: any 
   cupertino_icons: any
   logger: any 
-  flutter_dotenv: any 
+  flutter_dotenv: any
 
   
 dev_dependencies:
