@@ -1,40 +1,92 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:bloc/bloc.dart';
+import 'package:practice_app/features/auth/data/models/user_model.dart';
+import 'package:practice_app/features/auth/domain/usecases/signin_usecase.dart';
+import 'package:practice_app/features/auth/domain/usecases/signup_usecase.dart';
 import 'package:practice_app/features/auth/presentation/bloc/auth_state.dart';
 
-class SignUpCubit extends Cubit<SignUpState> {
+class AuthCubit extends Cubit<AuthState> {
+  final SignInUsecase signInUsecase;
+  final SignUpUsecase signUpUsecase;
 
-  SignUpCubit() : super(SignUpState.initial());
+  AuthCubit({
+    required this.signInUsecase,
+    required this.signUpUsecase,
+  }) : super(AuthState.initial());
 
+  // Form state management
   void updateEmail(String email) {
-
-      emit(state.copyWith(email: email, isActive: true));
-
+    emit(state.copyWith(
+      email: email,
+      isEmailValid: _isEmailValid(email),
+    ));
   }
 
   void updatePassword(String password) {
-
     emit(state.copyWith(password: password));
-
   }
 
   void validateEmail() {
-    final isValid = isEmailValid(state.email);
-    emit(state.copyWith(isVaild: isValid));
+    emit(state.copyWith(isEmailValid: _isEmailValid(state.email)));
   }
 
   void setActive(bool isActive) {
-    final isValid = isEmailValid(state.email);
-    emit(state.copyWith(isVaild: isValid));
-
+    emit(state.copyWith(
+      isActive: isActive,
+      isEmailValid: _isEmailValid(state.email),
+    ));
   }
 
-  bool isEmailValid(String email) {
+  bool _isEmailValid(String email) {
     final emailRegex = RegExp(r'[\w\-\.]+@([\w\-]+\.)+[\w\-]+');
     return emailRegex.hasMatch(email);
   }
 
-  bool isPasswordValid(String password) {
-    return password.isEmpty; 
-  } 
- 
+  // Authentication logic
+  Future<void> signIn() async {
+    if (state.isLoading) return;
+    
+    emit(state.copyWith(
+      status: AuthStatus.loading,
+      errorMessage: null,
+    ));
+
+    final result = await signInUsecase.call(
+      params: UserModel(
+        email: state.email.trim(),
+        password: state.password,
+      ),
+    );
+
+    result.fold(
+      (error) => emit(state.copyWith(
+        status: AuthStatus.error,
+        errorMessage: error.toString(),
+      )),
+      (_) => emit(state.copyWith(status: AuthStatus.authenticated)),
+    );
+  }
+
+  Future<void> signUp() async {
+    if (state.isLoading) return;
+    
+    emit(state.copyWith(
+      status: AuthStatus.loading,
+      errorMessage: null,
+    ));
+
+    final result = await signUpUsecase.call(
+      params: UserModel(
+        email: state.email.trim(),
+        password: state.password,
+      ),
+    );
+
+    result.fold(
+      (error) => emit(state.copyWith(
+        status: AuthStatus.error,
+        errorMessage: error.toString(),
+      )),
+      (_) => emit(state.copyWith(status: AuthStatus.authenticated)),
+    );
+  }
 }
