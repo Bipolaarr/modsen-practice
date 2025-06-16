@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 
 class SplashButton extends StatelessWidget {
-  late final Color backgroundColor;
-  late final String label;
-  late final VoidCallback onPressed;
-  late final double? width;
-  late final double? height;
-  late final TextStyle? textStyle;
-  late final Color? foregroundColor;
+  
+  final Color backgroundColor;
+  final String label;
+  final VoidCallback onPressed;
+  final double? width;
+  final double? height;
+  final TextStyle? textStyle;
+  final Color? foregroundColor;
 
-  SplashButton({
+  const SplashButton({
     super.key,
     required this.backgroundColor,
     required this.label,

@@ -46,9 +46,9 @@ class SplashContent extends StatelessWidget {
                                   'Welcome to Coinapp', 
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 32,
+                                    fontSize: 36,
                                     color: Colors.white,
-                                    letterSpacing: -0.5
+                                    letterSpacing: -2
                                   ),
                                   textAlign: TextAlign.center,
                                 ),
@@ -62,6 +62,7 @@ class SplashContent extends StatelessWidget {
                                     fontWeight: FontWeight.normal,
                                     fontSize: 14,
                                     color: Colors.white,
+                                    letterSpacing: -0.5
                                   ),
                                   textAlign: TextAlign.center,
                                 ),
@@ -70,13 +71,13 @@ class SplashContent extends StatelessWidget {
                               SplashButton(
                                 backgroundColor: Constants.formBlueColor,
                                 label: 'Sign In',
-                                onPressed: () => context.router.replace(const SignInRoute())
+                                onPressed: () => context.router.push(const SignInRoute())
                               ),
                               const SizedBox(height: 20),
                               SplashButton(
                                 backgroundColor: Colors.black,
                                 label: 'Sign Up',
-                                onPressed: () => context.router.replace(const SignupRoute())
+                                onPressed: () => context.router.push(const SignUpRoute())
                               ),
                             ],
                           ),

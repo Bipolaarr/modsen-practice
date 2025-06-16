@@ -16,11 +16,13 @@ dependencies:
   dio: any
   firebase_core: any 
   firebase_auth: any
+  cloud_firestore: any
   get_it: any
   flutter_svg: any 
   cupertino_icons: any
   logger: any 
   flutter_dotenv: any
+  dartz: ^0.10.1
 
   
 dev_dependencies:

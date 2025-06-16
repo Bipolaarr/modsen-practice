@@ -1,10 +1,9 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:logger/web.dart';
-import 'package:practice_app/core/injections/injections.dart';
+import 'package:practice_app/core/stuff/service_locator.dart';
 import 'package:practice_app/core/routing/app_router.dart';
 
 
@@ -16,8 +15,6 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   try {
-
-    await Injections().configureDependencies();
 
     if (kIsWeb) {
 
@@ -36,13 +33,9 @@ void main() async {
     await Firebase.initializeApp();
 
     }
+
+    configureDependencies();
     
-    var auth = FirebaseAuth.instance;
-
-    var token = await auth.signInWithEmailAndPassword(email: "test@gmail.com", password: "123456");
-
-    logger.d(token);
-
   } catch (e) {
 
     logger.e(e);
@@ -59,11 +52,13 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    final _AppRouter = AppRouter();
+    final appRouter = AppRouter();
 
     return MaterialApp.router(
       title: 'App',
-      routerConfig: _AppRouter.config(),
+      routerConfig: appRouter.config(),
+      themeMode: ThemeMode.dark,
+
     );
 
   }
