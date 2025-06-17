@@ -20,7 +20,6 @@ class SplashButton extends StatelessWidget {
     this.textStyle,
     this.foregroundColor,
   });
-
   @override
   Widget build(BuildContext context) {
     return SizedBox(

@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:logger/web.dart';
 import 'package:practice_app/core/stuff/service_locator.dart';
 import 'package:practice_app/core/routing/app_router.dart';
@@ -12,12 +13,10 @@ void main() async {
 
   Logger logger = Logger();
 
-  WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: WidgetsFlutterBinding.ensureInitialized());
 
   try {
-
     if (kIsWeb) {
-
       await dotenv.load(fileName: ".env");
       await Firebase.initializeApp(options: 
         FirebaseOptions(
@@ -29,18 +28,16 @@ void main() async {
       );
 
     } else {
-
     await Firebase.initializeApp();
-
     }
-
     configureDependencies();
-    
   } catch (e) {
 
     logger.e(e);
 
   }
+
+  FlutterNativeSplash.remove();
   
   runApp(const MainApp()); 
 

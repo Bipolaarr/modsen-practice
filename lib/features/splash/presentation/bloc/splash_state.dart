@@ -4,16 +4,12 @@ class SplashState {
   final double contentOpacity;
 
   const SplashState({
-
     required this.logoOpacity,
     required this.contentOpacity,
-
   });
 
   factory SplashState.initial() {
-
     return const SplashState(logoOpacity: 1, contentOpacity: 0);
-
   }
 
   SplashState copyWith({

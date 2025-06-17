@@ -18,7 +18,6 @@ class SplashContent extends StatelessWidget {
 
     return BlocBuilder<SplashCubit, SplashState>(
       builder: (context, state) {
-
         return Material(
           color: Colors.black,
           child: Stack(
@@ -93,7 +92,7 @@ class SplashContent extends StatelessWidget {
                           child: SvgPicture.asset(
                             Constants.logo,
                             width: 120,
-                            height: 120,
+                            height: 106,
                             placeholderBuilder: (ctx) => const Icon(CupertinoIcons.exclamationmark_circle),
                           ),
                         ),
@@ -105,7 +104,6 @@ class SplashContent extends StatelessWidget {
             ],
           ),
         );
-
       },
     );
 

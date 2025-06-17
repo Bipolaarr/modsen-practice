@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:practice_app/core/routing/app_router.dart';
 import 'package:practice_app/features/auth/presentation/widgets/auth_content.dart';
 
-// signin_page.dart
 @RoutePage()
 class SignInPage extends StatelessWidget {
   const SignInPage({super.key});

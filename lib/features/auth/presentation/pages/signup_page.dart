@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:practice_app/core/routing/app_router.dart';
 import 'package:practice_app/features/auth/presentation/widgets/auth_content.dart';
 
-// signup_page.dart
 @RoutePage()
 class SignUpPage extends StatelessWidget {
   const SignUpPage({super.key});
@@ -22,4 +21,3 @@ class SignUpPage extends StatelessWidget {
   }
 }
 
-/// dont travelling a lot of times 

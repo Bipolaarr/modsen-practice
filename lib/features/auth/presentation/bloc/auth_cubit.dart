@@ -41,7 +41,6 @@ class AuthCubit extends Cubit<AuthState> {
     return emailRegex.hasMatch(email);
   }
 
-  // Authentication logic
   Future<void> signIn() async {
     if (state.isLoading) return;
     

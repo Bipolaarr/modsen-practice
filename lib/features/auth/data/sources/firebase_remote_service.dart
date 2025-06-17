@@ -23,7 +23,6 @@ class FirebaseService extends FirebaseRemoteService {
       await _auth.signInWithEmailAndPassword(email: req.email, password: req.password);
       return Right({'message': 'Welcome back!'});
       
-
     } on FirebaseAuthException catch (e) {
       String msg = '';
       switch (e.code) {
@@ -48,7 +47,6 @@ class FirebaseService extends FirebaseRemoteService {
   Future<Either> signUp(UserModel req) async {
 
     try {
-
       await _auth.createUserWithEmailAndPassword(email: req.email, password: req.password);
       return Right("User has been succesfully registered");
     } on FirebaseAuthException catch (e) {
@@ -74,7 +72,5 @@ class FirebaseService extends FirebaseRemoteService {
     }
 
   }
-
-
 
 }
