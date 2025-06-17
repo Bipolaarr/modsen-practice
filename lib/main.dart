@@ -67,4 +67,4 @@ class MainApp extends StatelessWidget {
   }
 }
 
-/// flash icon size + snackbar + isar/local_auth
+/// isar/local_auth not implemented
