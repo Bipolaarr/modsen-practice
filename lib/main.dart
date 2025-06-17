@@ -56,7 +56,7 @@ class MainApp extends StatelessWidget {
       routerConfig: appRouter.config(),
       themeMode: ThemeMode.dark,
       builder: (context, child) {
-        return FlashyFlushbarProvider( // Move provider inside MaterialApp
+        return FlashyFlushbarProvider( 
           child: MediaQuery(
             data: MediaQuery.of(context).copyWith(textScaler: TextScaler.linear(1.0)),
             child: child!,

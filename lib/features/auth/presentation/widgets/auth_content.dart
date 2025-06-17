@@ -230,7 +230,6 @@ class AuthContent extends StatelessWidget {
                     child: BlocBuilder<AuthCubit, AuthState>(
                       builder: (context, state) {
                         final cubit = context.read<AuthCubit>();
-                        // Button is always enabled when fields are not empty
                         final isEnabled = !state.isLoading && 
                                          state.email.isNotEmpty && 
                                          state.password.isNotEmpty;

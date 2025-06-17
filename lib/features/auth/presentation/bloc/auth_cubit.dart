@@ -34,7 +34,6 @@ class AuthCubit extends Cubit<AuthState> {
     return emailRegex.hasMatch(email);
   }
 
-  // Added password validation (minimum 6 characters)
   bool _isPasswordValid(String password) {
     return password.length >= 6;
   }

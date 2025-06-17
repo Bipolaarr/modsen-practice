@@ -6,7 +6,7 @@ class AuthState extends Equatable {
   final String email;
   final String password;
   final bool isEmailValid;
-  final bool isPasswordValid; // Added password validation state
+  final bool isPasswordValid;
   final AuthStatus status;
   final String? errorMessage;
   final bool showError;
@@ -15,7 +15,7 @@ class AuthState extends Equatable {
     this.email = '',
     this.password = '',
     this.isEmailValid = true,
-    this.isPasswordValid = true, // Default to valid
+    this.isPasswordValid = true, 
     this.status = AuthStatus.initial,
     this.errorMessage,
     this.showError = false,
@@ -29,7 +29,7 @@ class AuthState extends Equatable {
     String? email,
     String? password,
     bool? isEmailValid,
-    bool? isPasswordValid, // Add to copyWith
+    bool? isPasswordValid, 
     AuthStatus? status,
     String? errorMessage,
     bool? showError,
