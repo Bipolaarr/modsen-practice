@@ -3,6 +3,7 @@ import 'package:practice_app/core/net/dio_client.dart';
 import 'package:practice_app/features/auth/data/repositories/auth_repo_impl.dart';
 import 'package:practice_app/features/auth/data/sources/firebase_remote_service.dart';
 import 'package:practice_app/features/auth/domain/repositories/auth_repo.dart';
+import 'package:practice_app/features/auth/domain/usecases/logout_usecase.dart';
 import 'package:practice_app/features/auth/domain/usecases/signin_usecase.dart';
 import 'package:practice_app/features/auth/domain/usecases/signup_usecase.dart';
 
@@ -22,6 +23,8 @@ import 'package:practice_app/features/auth/domain/usecases/signup_usecase.dart';
     serviceLocator.registerSingleton<SignInUsecase>(SignInUsecase());
 
     serviceLocator.registerSingleton<SignUpUsecase>(SignUpUsecase());
+
+    serviceLocator.registerSingleton<LogoutUsecase>(LogoutUsecase());
 
 
   }

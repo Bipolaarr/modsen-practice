@@ -23,6 +23,7 @@ dependencies:
   logger: any 
   flutter_dotenv: any
   dartz: ^0.10.1
+  flash: any
   
 
   

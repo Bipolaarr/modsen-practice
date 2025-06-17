@@ -6,6 +6,7 @@ abstract class FirebaseRemoteService {
 
   Future<Either> signIn(UserModel req);
   Future<Either> signUp(UserModel req);
+  Future<Either> logOut();
 
 }
 
@@ -40,6 +41,7 @@ class FirebaseService extends FirebaseRemoteService {
       } 
       return Left(msg);
     }
+
   }
 
 
@@ -69,6 +71,18 @@ class FirebaseService extends FirebaseRemoteService {
           msg = 'An unknown error occurred.';
       }
       return Left(msg);
+    }
+
+  }
+
+  @override
+  Future<Either> logOut() async {
+    
+    try{
+      await _auth.signOut();
+      return Right("");
+    } catch (e) {
+      return Left(e);
     }
 
   }

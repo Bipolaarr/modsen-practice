@@ -8,4 +8,6 @@ abstract class AuthRepository {
 
   Future <Either> signIn(UserModel req);
 
+  Future <Either> logOut();
+
 }

@@ -14,6 +14,12 @@ class AuthRepoImplementation extends AuthRepository {
   @override
   Future<Either> signUp(UserModel req) async {
     return await serviceLocator<FirebaseRemoteService>().signUp(req);
+
+  }
+
+  @override
+  Future<Either> logOut() async {
+    return await serviceLocator<FirebaseRemoteService>().logOut();
   }
   
 }
