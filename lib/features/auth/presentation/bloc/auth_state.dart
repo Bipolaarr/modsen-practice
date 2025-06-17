@@ -9,6 +9,7 @@ class AuthState extends Equatable {
   final bool isEmailValid;
   final AuthStatus status;
   final String? errorMessage;
+  final bool showError; // Renamed from attemptedAuth
 
   const AuthState({
     this.email = '',
@@ -17,6 +18,7 @@ class AuthState extends Equatable {
     this.isEmailValid = true,
     this.status = AuthStatus.initial,
     this.errorMessage,
+    this.showError = false, // Initialize as false
   });
 
   bool get isLoading => status == AuthStatus.loading;
@@ -30,6 +32,7 @@ class AuthState extends Equatable {
     bool? isEmailValid,
     AuthStatus? status,
     String? errorMessage,
+    bool? showError, // Add this
   }) {
     return AuthState(
       email: email ?? this.email,
@@ -38,6 +41,7 @@ class AuthState extends Equatable {
       isEmailValid: isEmailValid ?? this.isEmailValid,
       status: status ?? this.status,
       errorMessage: errorMessage ?? this.errorMessage,
+      showError: showError ?? this.showError,
     );
   }
 
@@ -49,6 +53,7 @@ class AuthState extends Equatable {
         isEmailValid,
         status,
         errorMessage,
+        showError,
       ];
 
   factory AuthState.initial() => const AuthState();

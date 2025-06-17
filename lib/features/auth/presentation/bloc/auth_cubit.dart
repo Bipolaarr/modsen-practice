@@ -13,16 +13,19 @@ class AuthCubit extends Cubit<AuthState> {
     required this.signUpUsecase,
   }) : super(AuthState.initial());
 
-  // Form state management
   void updateEmail(String email) {
     emit(state.copyWith(
       email: email,
       isEmailValid: _isEmailValid(email),
+      showError: false, // Reset error display on email change
     ));
   }
 
   void updatePassword(String password) {
-    emit(state.copyWith(password: password));
+    emit(state.copyWith(
+      password: password,
+      showError: false, // Reset error display on password change
+    ));
   }
 
   void validateEmail() {
@@ -47,22 +50,30 @@ class AuthCubit extends Cubit<AuthState> {
     emit(state.copyWith(
       status: AuthStatus.loading,
       errorMessage: null,
+      showError: true, // Set to show error only after attempt
     ));
 
-    final result = await signInUsecase.call(
-      params: UserModel(
-        email: state.email.trim(),
-        password: state.password,
-      ),
-    );
+    try {
+      final result = await signInUsecase.call(
+        params: UserModel(
+          email: state.email.trim(),
+          password: state.password,
+        ),
+      );
 
-    result.fold(
-      (error) => emit(state.copyWith(
-        status: AuthStatus.error,
-        errorMessage: error.toString(),
-      )),
-      (_) => emit(state.copyWith(status: AuthStatus.authenticated)),
-    );
+      result.fold(
+        (error) => emit(state.copyWith(
+          status: AuthStatus.error,
+          errorMessage: error.toString(),
+        )),
+        (_) => emit(state.copyWith(status: AuthStatus.authenticated)),
+      );
+    } catch (e) {
+      emit(state.copyWith(
+        status: AuthStatus.error, 
+        errorMessage: "Unexpected error occurred"
+      ));
+    }
   }
 
   Future<void> signUp() async {
@@ -71,21 +82,29 @@ class AuthCubit extends Cubit<AuthState> {
     emit(state.copyWith(
       status: AuthStatus.loading,
       errorMessage: null,
+      showError: true, // Set to show error only after attempt
     ));
 
-    final result = await signUpUsecase.call(
-      params: UserModel(
-        email: state.email.trim(),
-        password: state.password,
-      ),
-    );
+    try {
+      final result = await signUpUsecase.call(
+        params: UserModel(
+          email: state.email.trim(),
+          password: state.password,
+        ),
+      );
 
-    result.fold(
-      (error) => emit(state.copyWith(
-        status: AuthStatus.error,
-        errorMessage: error.toString(),
-      )),
-      (_) => emit(state.copyWith(status: AuthStatus.authenticated)),
-    );
+      result.fold(
+        (error) => emit(state.copyWith(
+          status: AuthStatus.error,
+          errorMessage: error.toString(),
+        )),
+        (_) => emit(state.copyWith(status: AuthStatus.authenticated)),
+      );
+    } catch (e) {
+      emit(state.copyWith(
+        status: AuthStatus.error, 
+        errorMessage: "Unexpected error occurred"
+      ));
+    }
   }
 }

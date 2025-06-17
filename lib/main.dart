@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flashy_flushbar/flashy_flushbar_provider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -48,18 +49,22 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     final appRouter = AppRouter();
 
-    return MaterialApp.router(
-      title: 'App',
-      routerConfig: appRouter.config(),
-      themeMode: ThemeMode.dark,
-
+    return FlashyFlushbarProvider( // Wrap with Flashy provider
+      child: MaterialApp.router(
+        title: 'App',
+        routerConfig: appRouter.config(),
+        themeMode: ThemeMode.dark,
+        builder: (context, child) {
+          return MediaQuery(
+            data: MediaQuery.of(context).copyWith(textScaler: TextScaler.linear(1.0)),
+            child: child!,
+          );
+        },
+      ),
     );
-
   }
-
 }
 
 /// flash icon size + snackbar + isar/local_auth

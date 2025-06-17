@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:flashy_flushbar/flashy_flushbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -38,8 +39,20 @@ class AuthContent extends StatelessWidget {
         listener: (context, state) {
           if (state.isAuthenticated) {
             context.router.replace(authButtonRoute);
-          } else if (state.hasError) {
-            //snackbar
+          } else if (state.hasError && state.showError) {
+            FlashyFlushbar(
+              duration: Duration(seconds: 5),
+              isDismissible: true,
+              dismissDirection: DismissDirection.up,
+              backgroundColor: Constants.formBlueColor,
+              message: state.errorMessage!,
+              messageStyle: TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+                letterSpacing: -0.5,
+                fontWeight: FontWeight.bold                
+              ),
+            ).show();
           }
         },
         child: Scaffold(
@@ -268,5 +281,3 @@ class AuthContent extends StatelessWidget {
     );
   }
 }
-
-

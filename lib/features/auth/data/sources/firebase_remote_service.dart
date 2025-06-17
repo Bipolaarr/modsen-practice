@@ -28,7 +28,7 @@ class FirebaseService extends FirebaseRemoteService {
       String msg = '';
       switch (e.code) {
         case 'invalid-credential':
-          msg = 'Wrong password provided for this user';
+          msg = 'Incorrect email or password. Check your input and try again';
           break;
         case 'invalid-email':
           msg = 'User with this email has not been found';
@@ -62,7 +62,7 @@ class FirebaseService extends FirebaseRemoteService {
           msg = 'This email is unavailable to use.';
           break; 
         case 'weak-password':
-          msg = 'This password is too weak (should be at least 8 characters).';
+          msg = 'This password is too weak (should be at least 6 characters).';
           break; 
         case 'too-many-requests':
           msg = 'Too many requests. Try later.';
