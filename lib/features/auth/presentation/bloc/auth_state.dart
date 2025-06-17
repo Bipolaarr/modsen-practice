@@ -5,20 +5,20 @@ enum AuthStatus { initial, loading, authenticated, error }
 class AuthState extends Equatable {
   final String email;
   final String password;
-  final bool isActive;
   final bool isEmailValid;
+  final bool isPasswordValid; // Added password validation state
   final AuthStatus status;
   final String? errorMessage;
-  final bool showError; // Renamed from attemptedAuth
+  final bool showError;
 
   const AuthState({
     this.email = '',
     this.password = '',
-    this.isActive = false,
     this.isEmailValid = true,
+    this.isPasswordValid = true, // Default to valid
     this.status = AuthStatus.initial,
     this.errorMessage,
-    this.showError = false, // Initialize as false
+    this.showError = false,
   });
 
   bool get isLoading => status == AuthStatus.loading;
@@ -28,17 +28,17 @@ class AuthState extends Equatable {
   AuthState copyWith({
     String? email,
     String? password,
-    bool? isActive,
     bool? isEmailValid,
+    bool? isPasswordValid, // Add to copyWith
     AuthStatus? status,
     String? errorMessage,
-    bool? showError, // Add this
+    bool? showError,
   }) {
     return AuthState(
       email: email ?? this.email,
       password: password ?? this.password,
-      isActive: isActive ?? this.isActive,
       isEmailValid: isEmailValid ?? this.isEmailValid,
+      isPasswordValid: isPasswordValid ?? this.isPasswordValid,
       status: status ?? this.status,
       errorMessage: errorMessage ?? this.errorMessage,
       showError: showError ?? this.showError,
@@ -49,8 +49,8 @@ class AuthState extends Equatable {
   List<Object?> get props => [
         email,
         password,
-        isActive,
         isEmailValid,
+        isPasswordValid,
         status,
         errorMessage,
         showError,

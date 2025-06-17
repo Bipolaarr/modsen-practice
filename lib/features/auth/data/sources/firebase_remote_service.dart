@@ -28,16 +28,16 @@ class FirebaseService extends FirebaseRemoteService {
       String msg = '';
       switch (e.code) {
         case 'invalid-credential':
-          msg = 'Incorrect email or password. Check your input and try again';
+          msg = 'Incorrect email or password. Check your input and try again.';
           break;
         case 'invalid-email':
-          msg = 'User with this email has not been found';
+          msg = 'User with this email hasn not been found. Check your input and try again.';
           break;
         case 'too-many-requests':
-          msg = 'Too many requests. Try later';
+          msg = 'Servers are busy, too many requests. Come back and try again later.';
           break;
         default:
-          msg = 'An unknown error occurred';
+          msg = 'An unknown error occurred. Come back and try again later.';
       } 
       return Left(msg);
     }
@@ -59,16 +59,16 @@ class FirebaseService extends FirebaseRemoteService {
           msg = 'This email is already in use. Try to login or reset your password.';
           break; 
         case 'invalid-email':
-          msg = 'This email is unavailable to use.';
+          msg = 'This email is unavailable to use. Check your input and try again.';
           break; 
         case 'weak-password':
-          msg = 'This password is too weak (should be at least 6 characters).';
+          msg = 'This password is too weak (Should be at least 6 characters).';
           break; 
         case 'too-many-requests':
-          msg = 'Too many requests. Try later.';
+          msg = 'Servers are busy, too many requests. Come back and try again later.';
           break; 
         default:
-          msg = 'An unknown error occurred.';
+          msg = 'An unknown error occurred. Come back and try again later.';
       }
       return Left(msg);
     }

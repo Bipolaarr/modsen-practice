@@ -17,25 +17,15 @@ class AuthCubit extends Cubit<AuthState> {
     emit(state.copyWith(
       email: email,
       isEmailValid: _isEmailValid(email),
-      showError: false, // Reset error display on email change
+      showError: false,
     ));
   }
 
   void updatePassword(String password) {
     emit(state.copyWith(
       password: password,
-      showError: false, // Reset error display on password change
-    ));
-  }
-
-  void validateEmail() {
-    emit(state.copyWith(isEmailValid: _isEmailValid(state.email)));
-  }
-
-  void setActive(bool isActive) {
-    emit(state.copyWith(
-      isActive: isActive,
-      isEmailValid: _isEmailValid(state.email),
+      isPasswordValid: _isPasswordValid(password),
+      showError: false,
     ));
   }
 
@@ -44,13 +34,18 @@ class AuthCubit extends Cubit<AuthState> {
     return emailRegex.hasMatch(email);
   }
 
+  // Added password validation (minimum 6 characters)
+  bool _isPasswordValid(String password) {
+    return password.length >= 6;
+  }
+
   Future<void> signIn() async {
     if (state.isLoading) return;
     
     emit(state.copyWith(
       status: AuthStatus.loading,
       errorMessage: null,
-      showError: true, // Set to show error only after attempt
+      showError: true,
     ));
 
     try {
@@ -82,7 +77,7 @@ class AuthCubit extends Cubit<AuthState> {
     emit(state.copyWith(
       status: AuthStatus.loading,
       errorMessage: null,
-      showError: true, // Set to show error only after attempt
+      showError: true,
     ));
 
     try {

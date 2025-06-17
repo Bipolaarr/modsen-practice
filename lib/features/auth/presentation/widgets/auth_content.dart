@@ -45,10 +45,11 @@ class AuthContent extends StatelessWidget {
               isDismissible: true,
               dismissDirection: DismissDirection.up,
               backgroundColor: Constants.formBlueColor,
+              borderRadius: BorderRadiusGeometry.circular(20),
               message: state.errorMessage!,
               messageStyle: TextStyle(
                 color: Colors.white,
-                fontSize: 16,
+                fontSize: 14,
                 letterSpacing: -0.5,
                 fontWeight: FontWeight.bold                
               ),
@@ -123,47 +124,36 @@ class AuthContent extends StatelessWidget {
                   child: BlocBuilder<AuthCubit, AuthState>(
                     builder: (context, state) {
                       final cubit = context.read<AuthCubit>();
-                      return FocusScope(
-                        child: Focus(
-                          onFocusChange: (hasFocus) {
-                            if (!hasFocus) {
-                              cubit.validateEmail();
-                            } else {
-                              cubit.setActive(true);
-                            }
-                          },
-                          child: TextField(
-                            onChanged: cubit.updateEmail,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              letterSpacing: -0.5
-                            ),
-                            cursorColor: Constants.formBlueColor,
-                            decoration: InputDecoration(
-                              labelText: "Enter your email address",
-                              labelStyle: const TextStyle(
-                                fontSize: 16,
-                                letterSpacing: -0.5,
-                                color: Colors.grey
-                              ),
-                              floatingLabelBehavior: FloatingLabelBehavior.never,
-                              errorStyle: const TextStyle(color: Colors.red),
-                              enabledBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: !state.isEmailValid 
-                                      ? Colors.red 
-                                      : Colors.grey,
-                                )
-                              ),
-                              focusedBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: state.isActive && state.isEmailValid 
-                                      ? Colors.white 
-                                      : Colors.red,
-                                )
-                              ),
-                            ),
+                      return TextField(
+                        onChanged: cubit.updateEmail,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          letterSpacing: -0.5
+                        ),
+                        cursorColor: Constants.formBlueColor,
+                        decoration: InputDecoration(
+                          labelText: "Enter your email address",
+                          labelStyle: const TextStyle(
+                            fontSize: 16,
+                            letterSpacing: -0.5,
+                            color: Colors.grey
+                          ),
+                          floatingLabelBehavior: FloatingLabelBehavior.never,
+                          errorStyle: const TextStyle(color: Colors.red),
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                              color: !state.isEmailValid 
+                                  ? Colors.red 
+                                  : Colors.grey,
+                            )
+                          ),
+                          focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                              color: state.isEmailValid 
+                                  ? Colors.white 
+                                  : Colors.red,
+                            )
                           ),
                         ),
                       );
@@ -185,20 +175,31 @@ class AuthContent extends StatelessWidget {
                         ),
                         cursorColor: Constants.formBlueColor,
                         obscureText: true,
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           labelText: "Enter your password",
-                          labelStyle: TextStyle(
+                          labelStyle: const TextStyle(
                             fontSize: 16,
                             letterSpacing: -0.5,
                             color: Colors.grey
                           ),
                           floatingLabelBehavior: FloatingLabelBehavior.never,
                           enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey)
+                            borderSide: BorderSide(
+                              color: !state.isPasswordValid 
+                                  ? Colors.red 
+                                  : Colors.grey,
+                            )
                           ),
                           focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white)
+                            borderSide: BorderSide(
+                              color: state.isPasswordValid 
+                                  ? Colors.white 
+                                  : Colors.red,
+                            )
                           ),
+                          errorText: state.showError && !state.isPasswordValid
+                              ? ''
+                              : null,
                         ),
                       );
                     }
@@ -229,11 +230,13 @@ class AuthContent extends StatelessWidget {
                     child: BlocBuilder<AuthCubit, AuthState>(
                       builder: (context, state) {
                         final cubit = context.read<AuthCubit>();
-                        final isValid = state.isEmailValid && 
-                                        state.password.isNotEmpty;
+                        // Button is always enabled when fields are not empty
+                        final isEnabled = !state.isLoading && 
+                                         state.email.isNotEmpty && 
+                                         state.password.isNotEmpty;
                         
                         return ElevatedButton(
-                          onPressed: (!state.isLoading && isValid)
+                          onPressed: isEnabled
                               ? () {
                                   if (showTerms) {
                                     cubit.signUp();
@@ -245,6 +248,9 @@ class AuthContent extends StatelessWidget {
                           style: ButtonStyle(
                             backgroundColor: WidgetStateProperty.resolveWith<Color>(
                               (Set<WidgetState> states) {
+                                if (!isEnabled) {
+                                  return Constants.formBlueColor.withOpacity(0.5);
+                                }
                                 return Constants.formBlueColor;
                               },
                             ),

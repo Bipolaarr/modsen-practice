@@ -51,18 +51,18 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final appRouter = AppRouter();
 
-    return FlashyFlushbarProvider( // Wrap with Flashy provider
-      child: MaterialApp.router(
-        title: 'App',
-        routerConfig: appRouter.config(),
-        themeMode: ThemeMode.dark,
-        builder: (context, child) {
-          return MediaQuery(
+    return MaterialApp.router(
+      title: 'App',
+      routerConfig: appRouter.config(),
+      themeMode: ThemeMode.dark,
+      builder: (context, child) {
+        return FlashyFlushbarProvider( // Move provider inside MaterialApp
+          child: MediaQuery(
             data: MediaQuery.of(context).copyWith(textScaler: TextScaler.linear(1.0)),
             child: child!,
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 }
