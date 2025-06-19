@@ -223,6 +223,8 @@ class AuthContent extends StatelessWidget {
                 ],
                 const SizedBox(height: 10),
                 SafeArea(
+                  // minimum: EdgeInsets.only(bottom: 10),
+                  bottom: true,
                   top: false,
                   child: SizedBox(
                     width: double.infinity,

@@ -30,7 +30,7 @@ class SplashContent extends StatelessWidget {
                     children: [
                       AnimatedPadding(
                         padding: EdgeInsets.only(
-                          top: state.contentOpacity > 0 ? 175 : 100,
+                          top: state.contentOpacity > 0 ? 150 : 100,
                         ),
                         duration: const Duration(milliseconds: 1000),
                         child: AnimatedOpacity(
@@ -66,13 +66,13 @@ class SplashContent extends StatelessWidget {
                                   textAlign: TextAlign.center,
                                 ),
                               ),
-                              const SizedBox(height: 40),
+                              const SizedBox(height: 30),
                               SplashButton(
                                 backgroundColor: Constants.formBlueColor,
                                 label: 'Sign In',
                                 onPressed: () => context.router.push(const SignInRoute())
                               ),
-                              const SizedBox(height: 20),
+                              const SizedBox(height: 10),
                               SplashButton(
                                 backgroundColor: Colors.black,
                                 label: 'Sign Up',

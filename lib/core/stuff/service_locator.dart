@@ -7,27 +7,19 @@ import 'package:practice_app/features/auth/domain/usecases/logout_usecase.dart';
 import 'package:practice_app/features/auth/domain/usecases/signin_usecase.dart';
 import 'package:practice_app/features/auth/domain/usecases/signup_usecase.dart';
 
-  final serviceLocator = GetIt.instance;
+final serviceLocator = GetIt.instance;
 
-  Future<void> configureDependencies() async {
+Future<void> configureDependencies() async {
 
-    serviceLocator.registerSingleton(() => DioClient());
+  serviceLocator.registerSingleton(() => DioClient());
+  serviceLocator.registerSingleton<FirebaseRemoteService>(FirebaseService());
+  serviceLocator.registerSingleton<AuthRepository>(AuthRepoImplementation());
 
-    serviceLocator.registerSingleton<FirebaseRemoteService>(FirebaseService());
+  serviceLocator.registerSingleton<SignInUsecase>(SignInUsecase());
+  serviceLocator.registerSingleton<SignUpUsecase>(SignUpUsecase());
+  serviceLocator.registerSingleton<LogoutUsecase>(LogoutUsecase());
 
-    serviceLocator.registerSingleton<AuthRepository>(AuthRepoImplementation());
-
-
-
-
-    serviceLocator.registerSingleton<SignInUsecase>(SignInUsecase());
-
-    serviceLocator.registerSingleton<SignUpUsecase>(SignUpUsecase());
-
-    serviceLocator.registerSingleton<LogoutUsecase>(LogoutUsecase());
-
-
-  }
+}
 
 
 

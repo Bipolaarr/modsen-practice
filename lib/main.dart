@@ -1,8 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flashy_flushbar/flashy_flushbar_provider.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:logger/web.dart';
 import 'package:practice_app/core/stuff/service_locator.dart';
@@ -17,20 +15,7 @@ void main() async {
   FlutterNativeSplash.preserve(widgetsBinding: WidgetsFlutterBinding.ensureInitialized());
 
   try {
-    if (kIsWeb) {
-      await dotenv.load(fileName: ".env");
-      await Firebase.initializeApp(options: 
-        FirebaseOptions(
-          apiKey: dotenv.env["FIREBASE_KEY"]!,
-          appId: dotenv.env["FIREBASE_APP_ID"]!,
-          messagingSenderId: dotenv.env["FIREBASE_MESSAGING_SENDER_ID"]!,
-          projectId: dotenv.env["FIREBASE_PROJECT_ID"]!
-        )
-      );
-
-    } else {
     await Firebase.initializeApp();
-    }
     configureDependencies();
   } catch (e) {
 
@@ -67,4 +52,4 @@ class MainApp extends StatelessWidget {
   }
 }
 
-/// isar/local_auth not implemented
+// ask bout safearea minimum: in auth_content (line above keyboard appears)

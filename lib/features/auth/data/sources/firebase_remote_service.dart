@@ -31,7 +31,7 @@ class FirebaseService extends FirebaseRemoteService {
           msg = 'Incorrect email or password. Check your input and try again.';
           break;
         case 'invalid-email':
-          msg = 'User with this email hasn not been found. Check your input and try again.';
+          msg = 'This email is unavailable to use. Check your input and try again.';
           break;
         case 'too-many-requests':
           msg = 'Servers are busy, too many requests. Come back and try again later.';
