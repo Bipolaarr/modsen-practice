@@ -1,10 +1,19 @@
 import 'package:bloc/bloc.dart';
+import 'package:practice_app/core/stuff/service_locator.dart';
 import 'package:practice_app/features/auth/data/models/user_model.dart';
+import 'package:practice_app/features/auth/domain/repositories/biometrics_repo.dart';
 import 'package:practice_app/features/auth/domain/usecases/signin_usecase.dart';
 import 'package:practice_app/features/auth/domain/usecases/signup_usecase.dart';
 import 'package:practice_app/features/auth/presentation/bloc/auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
+
+  ///
+
+  final BiometricsRepository _auth = serviceLocator<BiometricsRepository>();
+
+  ///
+
   final SignInUsecase signInUsecase;
   final SignUpUsecase signUpUsecase;
 
@@ -60,12 +69,26 @@ class AuthCubit extends Cubit<AuthState> {
           status: AuthStatus.error,
           errorMessage: error.toString(),
         )),
-        (_) => emit(state.copyWith(status: AuthStatus.authenticated)),
+        (_) async { 
+
+          //
+
+          final user = UserModel(
+            email: state.email.trim(),
+            password: state.password
+          );
+
+          await _auth.saveUser(user);
+
+          // 
+          
+          emit(state.copyWith(status: AuthStatus.authenticated)); 
+        }
       );
     } catch (e) {
       emit(state.copyWith(
         status: AuthStatus.error, 
-        errorMessage: "Unexpected error occurred"
+        errorMessage: "$e"
       ));
     }
   }
@@ -97,7 +120,7 @@ class AuthCubit extends Cubit<AuthState> {
     } catch (e) {
       emit(state.copyWith(
         status: AuthStatus.error, 
-        errorMessage: "Unexpected error occurred"
+        errorMessage: "$e"
       ));
     }
   }

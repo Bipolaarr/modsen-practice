@@ -22,10 +22,12 @@ dependencies:
   logger: any 
   dartz: ^0.10.1
   flashy_flushbar: any
+  isar: ^3.1.0
+  isar_flutter_libs: ^3.1.0
+  path_provider: ^2.0.15
+  local_auth: any
 
-  
 
-  
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -34,6 +36,8 @@ dev_dependencies:
   auto_route_generator: ^6.1.0
   analyzer: ^5.9.0
   flutter_native_splash: any
+  isar_generator: ^3.1.0
+
 
 flutter:
   uses-material-design: true
@@ -48,5 +52,5 @@ flutter_native_splash:
   ios: true
   web: true
 
-isar_version: &isar_version 3.1.0
+
 

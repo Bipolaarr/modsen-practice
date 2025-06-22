@@ -16,7 +16,7 @@ void main() async {
 
   try {
     await Firebase.initializeApp();
-    configureDependencies();
+    await configureDependencies();
   } catch (e) {
 
     logger.e(e);
@@ -53,3 +53,8 @@ class MainApp extends StatelessWidget {
 }
 
 // ask bout safearea minimum: in auth_content (line above keyboard appears)
+//route enum??
+//biometrics
+// abstract class -> abstract class interface to be implemented not extended
+//dio get all coins 
+

@@ -1,8 +1,10 @@
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:practice_app/features/auth/data/models/user_model.dart';
+import 'package:practice_app/features/auth/data/repositories/biometrics_repo_impl.dart';
+import 'package:practice_app/features/auth/domain/repositories/biometrics_repo.dart';
 
-abstract class FirebaseRemoteService {
+abstract class AbstractFirebaseRemoteService {
 
   Future<Either> signIn(UserModel req);
   Future<Either> signUp(UserModel req);
@@ -10,11 +12,13 @@ abstract class FirebaseRemoteService {
 
 }
 
-class FirebaseService extends FirebaseRemoteService {
+class FirebaseRemoteService extends AbstractFirebaseRemoteService {
 
-  FirebaseService() {_auth = FirebaseAuth.instance; } 
+  FirebaseRemoteService() { _auth = FirebaseAuth.instance; }
 
   late FirebaseAuth _auth;
+  final BiometricsRepository _biometricsRepository = BiometricsRepoImplementation();
+  
 
   @override
   Future<Either> signIn(UserModel req) async {
@@ -22,6 +26,9 @@ class FirebaseService extends FirebaseRemoteService {
     try {
 
       await _auth.signInWithEmailAndPassword(email: req.email, password: req.password);
+      final isUserExists = await _biometricsRepository.isUserExists();
+      if (!isUserExists) { await _biometricsRepository.saveUser(req); }
+      
       return Right({'message': 'Welcome back!'});
       
     } on FirebaseAuthException catch (e) {
@@ -37,7 +44,7 @@ class FirebaseService extends FirebaseRemoteService {
           msg = 'Servers are busy, too many requests. Come back and try again later.';
           break;
         default:
-          msg = 'An unknown error occurred. Come back and try again later.';
+          msg = e.code;
       } 
       return Left(msg);
     }
@@ -68,7 +75,7 @@ class FirebaseService extends FirebaseRemoteService {
           msg = 'Servers are busy, too many requests. Come back and try again later.';
           break; 
         default:
-          msg = 'An unknown error occurred. Come back and try again later.';
+          msg = e.code;
       }
       return Left(msg);
     }
@@ -80,6 +87,8 @@ class FirebaseService extends FirebaseRemoteService {
     
     try{
       await _auth.signOut();
+      await _biometricsRepository.deleteUser();
+      print("user deleted");
       return Right("");
     } catch (e) {
       return Left(e);
