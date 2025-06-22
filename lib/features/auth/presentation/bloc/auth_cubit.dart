@@ -7,13 +7,7 @@ import 'package:practice_app/features/auth/domain/usecases/signup_usecase.dart';
 import 'package:practice_app/features/auth/presentation/bloc/auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
-
-  ///
-
   final BiometricsRepository _auth = serviceLocator<BiometricsRepository>();
-
-  ///
-
   final SignInUsecase signInUsecase;
   final SignUpUsecase signUpUsecase;
 
@@ -70,26 +64,29 @@ class AuthCubit extends Cubit<AuthState> {
           errorMessage: error.toString(),
         )),
         (_) async { 
-
-          //
-
-          final user = UserModel(
-            email: state.email.trim(),
-            password: state.password
-          );
-
-          await _auth.saveUser(user);
-
-          // 
-          
+          // Save user for Face ID in background without blocking
+          _saveUserForBiometrics();
           emit(state.copyWith(status: AuthStatus.authenticated)); 
         }
       );
     } catch (e) {
       emit(state.copyWith(
         status: AuthStatus.error, 
-        errorMessage: "$e"
+        errorMessage: "Unexpected error occurred"
       ));
+    }
+  }
+
+  Future<void> _saveUserForBiometrics() async {
+    try {
+      final user = UserModel(
+        email: state.email.trim(),
+        password: state.password
+      );
+      await _auth.saveUser(user);
+    } catch (e) {
+      // Silently fail - don't show error to user
+      print("Biometric save error: $e");
     }
   }
 
@@ -120,7 +117,7 @@ class AuthCubit extends Cubit<AuthState> {
     } catch (e) {
       emit(state.copyWith(
         status: AuthStatus.error, 
-        errorMessage: "$e"
+        errorMessage: "Unexpected error occurred"
       ));
     }
   }

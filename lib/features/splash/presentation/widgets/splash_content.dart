@@ -10,103 +10,114 @@ import 'package:practice_app/features/splash/presentation/bloc/splash_state.dart
 import 'package:practice_app/features/splash/presentation/widgets/splash_button.dart';
 
 class SplashContent extends StatelessWidget {
-
   const SplashContent({super.key});
 
   @override
   Widget build(BuildContext context) {
-
-    return BlocBuilder<SplashCubit, SplashState>(
-      builder: (context, state) {
-        return Material(
-          color: Colors.black,
-          child: Stack(
-            children: [
-              Center(
-                child: SizedBox(
-                  width: double.infinity,
-                  child: Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      AnimatedPadding(
-                        padding: EdgeInsets.only(
-                          top: state.contentOpacity > 0 ? 150 : 100,
-                        ),
-                        duration: const Duration(milliseconds: 1000),
-                        child: AnimatedOpacity(
-                          opacity: state.contentOpacity,
-                          duration: const Duration(milliseconds: 1500),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              const Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 20),
-                                child: Text(
-                                  'Welcome to Coinapp', 
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 36,
-                                    color: Colors.white,
-                                    letterSpacing: -2
+    return BlocListener<SplashCubit, SplashState>(
+      listener: (context, state) {
+        if (state.shouldNavigateToHome) {
+          context.router.replace(const HomeRoute());
+        }
+        
+        if (state.biometricError != null) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(state.biometricError!)),
+          );
+        }
+      },
+      child: BlocBuilder<SplashCubit, SplashState>(
+        builder: (context, state) {
+          return Material(
+            color: Colors.black,
+            child: Stack(
+              children: [
+                Center(
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        AnimatedPadding(
+                          padding: EdgeInsets.only(
+                            top: state.contentOpacity > 0 ? 150 : 100,
+                          ),
+                          duration: const Duration(milliseconds: 1000),
+                          child: AnimatedOpacity(
+                            opacity: state.contentOpacity,
+                            duration: const Duration(milliseconds: 1500),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 20),
+                                  child: Text(
+                                    'Welcome to Coinapp', 
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 36,
+                                      color: Colors.white,
+                                      letterSpacing: -2
+                                    ),
+                                    textAlign: TextAlign.center,
                                   ),
-                                  textAlign: TextAlign.center,
                                 ),
-                              ),
-                              const SizedBox(height: 10),
-                              const Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 20),
-                                child: Text(
-                                  'All your crypto transactions in one place! Track coins, add portfolios, buy & sell.',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.normal,
-                                    fontSize: 14,
-                                    color: Colors.white,
-                                    letterSpacing: -0.5
+                                const SizedBox(height: 10),
+                                const Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 20),
+                                  child: Text(
+                                    'All your crypto transactions in one place! Track coins, add portfolios, buy & sell.',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.normal,
+                                      fontSize: 14,
+                                      color: Colors.white,
+                                      letterSpacing: -0.5
+                                    ),
+                                    textAlign: TextAlign.center,
                                   ),
-                                  textAlign: TextAlign.center,
                                 ),
-                              ),
-                              const SizedBox(height: 30),
-                              SplashButton(
-                                backgroundColor: Constants.formBlueColor,
-                                label: 'Sign In',
-                                onPressed: () => context.router.push(const SignInRoute())
-                              ),
-                              const SizedBox(height: 10),
-                              SplashButton(
-                                backgroundColor: Colors.black,
-                                label: 'Sign Up',
-                                onPressed: () => context.router.push(const SignUpRoute())
-                              ),
-                            ],
+                                const SizedBox(height: 30),
+                                if (state.quickAuthChecked) ...[
+                                  SplashButton(
+                                    backgroundColor: Constants.formBlueColor,
+                                    label: 'Sign In',
+                                    onPressed: () => context.router.push(const SignInRoute()),
+                                  ),
+                                  const SizedBox(height: 10),
+                                  SplashButton(
+                                    backgroundColor: Colors.black,
+                                    label: 'Sign Up',
+                                    onPressed: () => context.router.push(const SignUpRoute()),
+                                  ),
+                                ],
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                      AnimatedPadding(
-                        duration: const Duration(milliseconds: 1000),
-                        padding: EdgeInsets.only(
-                          bottom: state.contentOpacity > 0 ? 300 : 0,
-                        ),
-                        child: Opacity(
-                          opacity: state.logoOpacity,
-                          child: SvgPicture.asset(
-                            Constants.logo,
-                            width: 120,
-                            height: 106,
-                            placeholderBuilder: (ctx) => const Icon(CupertinoIcons.exclamationmark_circle),
+                        AnimatedPadding(
+                          duration: const Duration(milliseconds: 1000),
+                          padding: EdgeInsets.only(
+                            bottom: state.contentOpacity > 0 ? 300 : 0,
+                          ),
+                          child: Opacity(
+                            opacity: state.logoOpacity,
+                            child: SvgPicture.asset(
+                              Constants.logo,
+                              width: 120,
+                              height: 106,
+                              placeholderBuilder: (ctx) => const Icon(CupertinoIcons.exclamationmark_circle),
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
-          ),
-        );
-      },
+              ],
+            ),
+          );
+        },
+      ),
     );
-
   }
-
 }

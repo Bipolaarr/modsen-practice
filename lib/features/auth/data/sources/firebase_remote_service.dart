@@ -9,6 +9,7 @@ abstract class AbstractFirebaseRemoteService {
   Future<Either> signIn(UserModel req);
   Future<Either> signUp(UserModel req);
   Future<Either> logOut();
+  Future<Either> quickLogin();
 
 }
 
@@ -38,10 +39,13 @@ class FirebaseRemoteService extends AbstractFirebaseRemoteService {
           msg = 'Incorrect email or password. Check your input and try again.';
           break;
         case 'invalid-email':
-          msg = 'This email is unavailable to use. Check your input and try again.';
+          msg = 'Incorrect email or password. Check your input and try again.';
           break;
         case 'too-many-requests':
           msg = 'Servers are busy, too many requests. Come back and try again later.';
+          break;
+        case 'wrong-password':
+          msg = 'Incorrect email or password. Check your input and try again.';
           break;
         default:
           msg = e.code;
@@ -50,7 +54,6 @@ class FirebaseRemoteService extends AbstractFirebaseRemoteService {
     }
 
   }
-
 
   @override
   Future<Either> signUp(UserModel req) async {
@@ -94,6 +97,18 @@ class FirebaseRemoteService extends AbstractFirebaseRemoteService {
       return Left(e);
     }
 
+  }
+
+  @override
+  Future<Either> quickLogin() async {
+    try {
+      final user = await _biometricsRepository.getSavedUser();
+      if (user == null) return Left('No saved credentials');
+      
+      return await signIn(user);
+    } catch (e) {
+      return Left(e.toString());
+    }
   }
 
 }

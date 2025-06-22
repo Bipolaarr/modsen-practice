@@ -1,18 +1,18 @@
 import 'package:dartz/dartz.dart';
 import 'package:practice_app/core/stuff/service_locator.dart';
 import 'package:practice_app/core/stuff/usecase.dart';
-import 'package:practice_app/features/auth/data/models/user_model.dart';
 import 'package:practice_app/features/auth/domain/repositories/biometrics_repo.dart';
 
-class QuickAuthCheckUsecase extends Usecase<Either, UserModel>{
+class QuickAuthCheckUsecase extends Usecase<Either<Exception, bool>, void> {
 
   @override
-  Future<Either> call({UserModel? params}) async {
+  Future<Either<Exception, bool>> call({void params}) async {
     try {
-      final bool result = await serviceLocator<BiometricsRepository>().isUserExists();
+      final result = await serviceLocator<BiometricsRepository>().isUserExists();
       return Right(result);
     } catch (e) {
-      return Left(e);
+      return Left(Exception(e.toString()));
     }
-  } 
+  }
+  
 }

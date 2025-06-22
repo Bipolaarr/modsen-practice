@@ -52,9 +52,9 @@ class MainApp extends StatelessWidget {
   }
 }
 
-// ask bout safearea minimum: in auth_content (line above keyboard appears)
-//route enum??
-//biometrics
-// abstract class -> abstract class interface to be implemented not extended
+// ask bout safearea minimum: in auth_content (line above keyboard appears) ???
+//route enum ???
+
 //dio get all coins 
+// refactor 
 

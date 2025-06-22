@@ -19,7 +19,6 @@ class BiometricsRepoImplementation implements BiometricsRepository{
     return await serviceLocator<AbstractIsarLocalService>().getSavedUser();
   }
 
-  @override
   Future<void> initialize() async {
     return await serviceLocator<AbstractIsarLocalService>().initialize();
   }
@@ -32,6 +31,11 @@ class BiometricsRepoImplementation implements BiometricsRepository{
   @override
   Future<void> saveUser(UserModel user) async {
     return await serviceLocator<AbstractIsarLocalService>().saveUser(user);
+  }
+  
+  @override
+  Future<bool> isBiometricAuthAvailable() async {
+    return await serviceLocator<AbstractIsarLocalService>().isBiometricAuthAvailable();
   }
     
   

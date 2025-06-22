@@ -7,5 +7,6 @@ abstract interface class AuthRepository {
   Future <Either> signUp(UserModel req);
   Future <Either> signIn(UserModel req);
   Future <Either> logOut();
+  Future <Either> quickLogin();
 
 }

@@ -37,17 +37,21 @@ class AuthContent extends StatelessWidget {
       ),
       child: BlocListener<AuthCubit, AuthState>(
         listener: (context, state) {
+          // Only navigate when authenticated
           if (state.isAuthenticated) {
             context.router.replace(authButtonRoute);
-          } else if (state.hasError && state.showError) {
+          }
+          
+          // Only show flushbar on explicit authentication errors
+          if (state.status == AuthStatus.error && state.showError) {
             FlashyFlushbar(
-              duration: Duration(seconds: 5),
+              duration: const Duration(seconds: 5),
               isDismissible: true,
               dismissDirection: DismissDirection.up,
               backgroundColor: Constants.formBlueColor,
               borderRadius: BorderRadiusGeometry.circular(20),
               message: state.errorMessage!,
-              messageStyle: TextStyle(
+              messageStyle: const TextStyle(
                 color: Colors.white,
                 fontSize: 14,
                 letterSpacing: -0.5,
@@ -223,7 +227,6 @@ class AuthContent extends StatelessWidget {
                 ],
                 const SizedBox(height: 10),
                 SafeArea(
-                  // minimum: EdgeInsets.only(bottom: 10),
                   bottom: true,
                   top: false,
                   child: SizedBox(
@@ -232,28 +235,18 @@ class AuthContent extends StatelessWidget {
                     child: BlocBuilder<AuthCubit, AuthState>(
                       builder: (context, state) {
                         final cubit = context.read<AuthCubit>();
-                        final isEnabled = !state.isLoading && 
-                                         state.email.isNotEmpty && 
-                                         state.password.isNotEmpty;
                         
                         return ElevatedButton(
-                          onPressed: isEnabled
-                              ? () {
-                                  if (showTerms) {
-                                    cubit.signUp();
-                                  } else {
-                                    cubit.signIn();
-                                  }
-                                }
-                              : null,
+                          onPressed: () {
+                            if (showTerms) {
+                              cubit.signUp();
+                            } else {
+                              cubit.signIn();
+                            }
+                          },
                           style: ButtonStyle(
-                            backgroundColor: WidgetStateProperty.resolveWith<Color>(
-                              (Set<WidgetState> states) {
-                                if (!isEnabled) {
-                                  return Constants.formBlueColor.withOpacity(0.5);
-                                }
-                                return Constants.formBlueColor;
-                              },
+                            backgroundColor: WidgetStateProperty.all<Color>(
+                              Constants.formBlueColor
                             ),
                             foregroundColor: WidgetStateProperty.all<Color>(Colors.white),
                             shape: WidgetStateProperty.all<RoundedRectangleBorder>(
@@ -262,7 +255,7 @@ class AuthContent extends StatelessWidget {
                               ),
                             ),
                             overlayColor: WidgetStateProperty.all<Color>(
-                              Constants.formBlueColor.withOpacity(0.7)),
+                              Constants.formBlueColor.withOpacity(1)),
                             elevation: WidgetStateProperty.all<double>(0),
                           ),
                           child: state.isLoading

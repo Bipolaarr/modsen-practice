@@ -21,5 +21,10 @@ class AuthRepoImplementation implements AuthRepository {
   Future<Either> logOut() async {
     return await serviceLocator<AbstractFirebaseRemoteService>().logOut();
   }
+
+  @override
+  Future<Either> quickLogin() async {
+    return await serviceLocator<AbstractFirebaseRemoteService>().quickLogin();
+  }
   
 }
