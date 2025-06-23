@@ -30,7 +30,7 @@ Future<void> configureDependencies() async {
 
   await dotenv.load(fileName: ".env");
   final _apiKey = dotenv.env['CG_APIKEY'];
-  if (_apiKey == null) logger.e("WTHELLY");
+  if (_apiKey == null) logger.e("API Key is unavailable");
 
   final isarService = IsarLocalService();
   await isarService.initialize();

@@ -52,8 +52,6 @@ class MainApp extends StatelessWidget {
 }
 
 // ask bout safearea minimum: in auth_content (line above keyboard appears) ???
-//route enum ???
+// placeholder not centered for some reason ??
 
-//dio get all coins 
-// refactor 
 

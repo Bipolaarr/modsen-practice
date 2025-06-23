@@ -1,4 +1,4 @@
-
+// features/home/presentation/bloc/home_page_state.dart
 import 'package:practice_app/features/home/data/models/coin_model.dart';
 
 sealed class HomeState {}

@@ -1,4 +1,3 @@
-// features/home/presentation/pages/home_page.dart
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -41,7 +40,7 @@ class HomePage extends StatelessWidget {
               size: 26,
             ),
             onPressed: () {
-              // TODO: Implement portfolio view navigation
+              // NOT IMPLEMENTED YET
             },
           ),
           actions: [
@@ -60,6 +59,10 @@ class HomePage extends StatelessWidget {
         ),
         body: BlocBuilder<HomeCubit, HomeState>(
           builder: (context, state) {
+            if (state is HomeInitial) {
+              return buildInitialPlaceholder();
+            }
+            
             if (state is HomeLoading) {
               return const Center(
                 child: CircularProgressIndicator(color: Constants.formBlueColor),
@@ -67,26 +70,24 @@ class HomePage extends StatelessWidget {
             }
             
             if (state is HomeError) {
-              return _buildErrorPlaceholder(context, state.message);
+              return buildErrorPlaceholder(context, state.message);
             }
             
             if (state is HomeLoaded) {
               return ListView.builder(
                 itemCount: state.coins.length,
-                itemBuilder: (context, index) {
-                  return CoinTile(coin: state.coins[index]);
-                },
+                itemBuilder: (context, index) => CoinTile(coin: state.coins[index]),
               );
             }
             
-            return _buildInitialPlaceholder();
+            return buildInitialPlaceholder();
           },
         ),
       ),
     );
   }
 
-  Widget _buildInitialPlaceholder() {
+  Widget buildInitialPlaceholder() {
     return const Center(
       child: Text(
         'Loading cryptocurrency data...',
@@ -95,50 +96,54 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _buildErrorPlaceholder(BuildContext context, String message) {
+  Widget buildErrorPlaceholder(BuildContext context, String message) {
     return Center(
       child: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Icon(
               CupertinoIcons.exclamationmark_triangle_fill,
-              color: Colors.orange,
-              size: 64,
-            ),
-            const SizedBox(height: 20),
-            const Text(
-              'Failed to load data',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
+              color: Colors.red,
+              size: 70,
             ),
             const SizedBox(height: 10),
-            Text(
-              message,
-              textAlign: TextAlign.center,
-              style: const TextStyle(color: Colors.white70),
+            const Text(
+              'Network error occured',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                letterSpacing: -1
+              ),
             ),
             const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () => context.read<HomeCubit>().loadCoins(),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Constants.formBlueColor,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
+            SizedBox(
+              height: 50,
+              width: 187,
+              child: ElevatedButton(
+                onPressed: () => context.read<HomeCubit>().loadCoins(),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Constants.formBlueColor,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                ),
+                child: const Text(
+                  'Retry',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold
+                  ),
                 ),
               ),
-              child: const Text(
-                'Retry',
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
+            )
           ],
         ),
       ),
     );
   }
+
 }

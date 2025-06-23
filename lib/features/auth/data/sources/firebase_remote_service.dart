@@ -47,6 +47,9 @@ class FirebaseRemoteService extends AbstractFirebaseRemoteService {
         case 'wrong-password':
           msg = 'Incorrect email or password. Check your input and try again.';
           break;
+        case 'network-request-failed':
+          msg = 'Network error occured. Check your connection and start again.';
+          break;
         default:
           msg = e.code;
       } 
@@ -77,6 +80,9 @@ class FirebaseRemoteService extends AbstractFirebaseRemoteService {
         case 'too-many-requests':
           msg = 'Servers are busy, too many requests. Come back and try again later.';
           break; 
+        case 'network-request-failed':
+          msg = 'Network error occured. Check your connection and start again.';
+          break;
         default:
           msg = e.code;
       }

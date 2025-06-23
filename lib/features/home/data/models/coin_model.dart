@@ -4,6 +4,7 @@ part 'coin_model.g.dart';
 
 @JsonSerializable()
 class CoinModel{
+  
   String? id;
   String? symbol;
   String? name;
@@ -64,6 +65,6 @@ class CoinModel{
   factory CoinModel.fromJson(Map<String, dynamic> json) =>
       _$CoinModelFromJson(json);
 
-  // A method that converts a User instance into a map.
   Map<String, dynamic> toJson() => _$CoinModelToJson(this);
+
 }
