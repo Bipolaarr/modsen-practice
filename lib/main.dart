@@ -10,8 +10,7 @@ import 'package:practice_app/core/routing/app_router.dart';
 
 void main() async {
 
-  Logger logger = Logger();
-
+  Logger? logger; 
   FlutterNativeSplash.preserve(widgetsBinding: WidgetsFlutterBinding.ensureInitialized());
 
   try {
@@ -19,7 +18,7 @@ void main() async {
     await configureDependencies();
   } catch (e) {
 
-    logger.e(e);
+    logger!.e(e);
 
   }
 
