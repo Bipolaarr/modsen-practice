@@ -24,36 +24,6 @@ class CoinsRepositoryImplementation implements CoinsRepository{
   final String _apikey;
   
   @override
-  Future<String> test() async {
-    try{
-      final res = await _source.ping(_apikey);
-      return res;
-    }
-    on DioException catch (e) {
-      if (e.type == DioExceptionType.connectionTimeout ||
-          e.type == DioExceptionType.receiveTimeout) {
-        throw TimeoutException();
-      }
-      return "Null return";
-    }
-  }
-
-  @override
-  Future<List<CoinModel>> coinsListIdMap() async {
-    try{
-      final res = await _source.coinsList(_apikey);
-      return res;
-    }
-    on DioException catch (e) {
-      if (e.type == DioExceptionType.connectionTimeout ||
-          e.type == DioExceptionType.receiveTimeout) {
-        throw TimeoutException();
-      }
-      return [];
-    }
-  }
-
-  @override
   Future<List<CoinModel>> coinsListMarketData({int page = 1,PriceChangePercentageTimeframes timeframe = PriceChangePercentageTimeframes.twentyFourHours}) async {
     try{
       final res = await _source.coinsListWithMarketData(
@@ -74,5 +44,5 @@ class CoinsRepositoryImplementation implements CoinsRepository{
       rethrow;
     }
   }
-  
+
 }

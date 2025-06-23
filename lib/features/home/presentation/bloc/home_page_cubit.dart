@@ -17,8 +17,10 @@ class HomeCubit extends Cubit<HomeState> {
       );
       emit(HomeLoaded(coins));
     } on TimeoutException {
+      emit(HomeError(""));
     } catch (e) {
       emit(HomeError(e.toString()));
     }
   }
+  
 }

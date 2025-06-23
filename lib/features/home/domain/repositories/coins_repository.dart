@@ -11,7 +11,6 @@ enum PriceChangePercentageTimeframes {
 }
 
 abstract interface class CoinsRepository{
-  Future<String> test();
-  Future<List<CoinModel>> coinsListIdMap();
+ 
   Future<List<CoinModel>> coinsListMarketData({int page = 1,PriceChangePercentageTimeframes timeframe = PriceChangePercentageTimeframes.twentyFourHours});
 }
