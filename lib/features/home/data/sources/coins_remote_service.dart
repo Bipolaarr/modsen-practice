@@ -9,10 +9,6 @@ part 'coins_remote_service.g.dart';
 abstract class CoinsRemoteService {
   factory CoinsRemoteService(Dio dio, {String baseUrl}) = _CoinsRemoteService;
 
-  @GET('/ping')
-  Future<String> ping(@Query(Constants.apiKeyParam) String apiKey);
-  @GET('/coins/list')
-  Future<List<CoinModel>> coinsList(@Query(Constants.apiKeyParam) String apiKey);
   @GET('/coins/markets')
   Future<List<CoinModel>> coinsListWithMarketData(
       @Query(Constants.apiKeyParam) String apiKey,
@@ -24,4 +20,5 @@ abstract class CoinsRemoteService {
         @Query('price_change_percentage') String priceChangePercentageTimeframe = '24h',
       }
       );
+      
 }
