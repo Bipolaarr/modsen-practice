@@ -27,7 +27,6 @@ class SplashCubit extends Cubit<SplashState> {
       
       await result.fold(
         (failure) async {
-          // Start animation only after failure
           await _startAnimation();
           emit(state.copyWith(
             biometricError: failure.toString(),
@@ -36,7 +35,6 @@ class SplashCubit extends Cubit<SplashState> {
         },
         (shouldAttempt) async {
           if (!shouldAttempt) {
-            // Start animation when no Face ID attempt needed
             await _startAnimation();
             emit(state.copyWith(quickAuthChecked: true));
             return;
@@ -45,7 +43,6 @@ class SplashCubit extends Cubit<SplashState> {
           final authResult = await _quickAuthUsecase();
           authResult.fold(
             (error) async {
-              // Start animation only after Face ID error
               await _startAnimation();
               emit(state.copyWith(
                 biometricError: error.toString(),
@@ -54,10 +51,8 @@ class SplashCubit extends Cubit<SplashState> {
             },
             (success) {
               if (success) {
-                // Success: navigate immediately without animation
                 emit(state.copyWith(shouldNavigateToHome: true));
               } else {
-                // User canceled: start animation
                 _startAnimation().then((_) {
                   emit(state.copyWith(quickAuthChecked: true));
                 });
@@ -67,7 +62,6 @@ class SplashCubit extends Cubit<SplashState> {
         }
       );
     } catch (e) {
-      // Start animation only after exception
       await _startAnimation();
       emit(state.copyWith(
         biometricError: e.toString(),

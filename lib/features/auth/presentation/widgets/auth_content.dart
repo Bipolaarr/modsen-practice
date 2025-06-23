@@ -37,12 +37,10 @@ class AuthContent extends StatelessWidget {
       ),
       child: BlocListener<AuthCubit, AuthState>(
         listener: (context, state) {
-          // Only navigate when authenticated
           if (state.isAuthenticated) {
             context.router.replace(authButtonRoute);
           }
           
-          // Only show flushbar on explicit authentication errors
           if (state.status == AuthStatus.error && state.showError) {
             FlashyFlushbar(
               duration: const Duration(seconds: 5),

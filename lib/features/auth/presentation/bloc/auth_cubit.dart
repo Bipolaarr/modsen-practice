@@ -64,7 +64,6 @@ class AuthCubit extends Cubit<AuthState> {
           errorMessage: error.toString(),
         )),
         (_) async { 
-          // Save user for Face ID in background without blocking
           _saveUserForBiometrics();
           emit(state.copyWith(status: AuthStatus.authenticated)); 
         }
@@ -84,10 +83,7 @@ class AuthCubit extends Cubit<AuthState> {
         password: state.password
       );
       await _auth.saveUser(user);
-    } catch (e) {
-      // Silently fail - don't show error to user
-      print("Biometric save error: $e");
-    }
+    } catch (e) {}
   }
 
   Future<void> signUp() async {
