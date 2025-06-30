@@ -260,7 +260,7 @@ class _CoinDashboardView extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.grey[900],
+        color: Colors.transparent,
         borderRadius: BorderRadius.circular(12),
       ),
       child: Column(
@@ -272,7 +272,7 @@ class _CoinDashboardView extends StatelessWidget {
                 ? LineChart(
                     _mainChartData(state.chartData, state.isPositive, state.timeframe),
                   )
-                : const Center(child: CircularProgressIndicator()),
+                : const Center(child: CircularProgressIndicator(color: Constants.formBlueColor,)),
           ),
           const SizedBox(height: 16),
         ],
@@ -310,6 +310,7 @@ class _CoinDashboardView extends StatelessWidget {
       gridData: const FlGridData(show: false),
       titlesData: const FlTitlesData(show: false),
       borderData: FlBorderData(show: false),
+      
       minX: spots.isNotEmpty ? spots.first.x : 0.0,
       maxX: spots.isNotEmpty ? spots.last.x : 0.0,
       minY: minY,
@@ -317,16 +318,13 @@ class _CoinDashboardView extends StatelessWidget {
       lineBarsData: [
         LineChartBarData(
           spots: spots,
-          isCurved: true,
+          isCurved: false,
           color: isPositive ? Colors.green : Colors.red,
           barWidth: 3,
-          isStrokeCapRound: true,
+          isStrokeCapRound: false,
           dotData: const FlDotData(show: false),
           belowBarData: BarAreaData(
-            show: true,
-            color: isPositive 
-                ? Colors.greenAccent.withOpacity(0.1)
-                : Colors.red.withOpacity(0.1),
+            show: false,
           ),
         ),
       ],
