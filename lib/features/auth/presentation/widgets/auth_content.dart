@@ -96,6 +96,7 @@ class AuthContent extends StatelessWidget {
             ],
           ),
           body: SafeArea(
+            // minimum: EdgeInsets.only(bottom: 25),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,

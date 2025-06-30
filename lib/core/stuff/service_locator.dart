@@ -14,6 +14,10 @@ import 'package:practice_app/features/auth/domain/usecases/quick_auth_check_usec
 import 'package:practice_app/features/auth/domain/usecases/quick_auth_usecase.dart';
 import 'package:practice_app/features/auth/domain/usecases/signin_usecase.dart';
 import 'package:practice_app/features/auth/domain/usecases/signup_usecase.dart';
+import 'package:practice_app/features/coin/data/repositories/chart_repo_implementation.dart';
+import 'package:practice_app/features/coin/domain/repositories/chart_repository.dart';
+import 'package:practice_app/features/coin/presentation/bloc/chart_cubit.dart';
+import 'package:practice_app/features/coin/presentation/bloc/coin_data_cubit.dart';
 import 'package:practice_app/features/home/data/repositories/coins_repo_impl.dart';
 import 'package:practice_app/features/home/data/sources/coins_remote_service.dart';
 import 'package:practice_app/features/home/domain/repositories/coins_repository.dart';
@@ -43,6 +47,15 @@ Future<void> configureDependencies() async {
   serviceLocator.registerSingleton<AbstractIsarLocalService>(isarService);
   serviceLocator.registerSingleton<BiometricsRepository>(BiometricsRepoImplementation());
   serviceLocator.registerSingleton<CoinsRepository>(CoinsRepositoryImplementation(CoinsRemoteService(Dio()), _apiKey!));
+  serviceLocator.registerSingleton<ChartRepository>(ChartRepositoryImpl(remoteService: CoinsRemoteService(Dio()), apiKey: _apiKey));
+
+  serviceLocator.registerFactory(
+    () => CoinDataCubit(serviceLocator<CoinsRepository>()),
+  );
+  
+  serviceLocator.registerFactory(
+    () => ChartCubit(serviceLocator<ChartRepository>()),
+  );
 
   serviceLocator.registerSingleton<SignInUsecase>(SignInUsecase());
   serviceLocator.registerSingleton<SignUpUsecase>(SignUpUsecase());

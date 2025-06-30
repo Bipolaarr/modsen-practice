@@ -28,8 +28,8 @@ dependencies:
   path_provider: ^2.0.15
   local_auth: any
   json_annotation: any
-  cached_network_image: any
   flutter_dotenv: any
+  fl_chart: any
 
 
 dev_dependencies:

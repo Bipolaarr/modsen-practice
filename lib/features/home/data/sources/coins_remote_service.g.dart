@@ -12,6 +12,7 @@ class _CoinsRemoteService implements CoinsRemoteService {
   _CoinsRemoteService(
     this._dio, {
     this.baseUrl,
+    // ignore: unused_element_parameter
     this.errorLogger,
   }) {
     baseUrl ??= 'https://api.coingecko.com/api/v3';
@@ -34,7 +35,7 @@ class _CoinsRemoteService implements CoinsRemoteService {
   }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
-      r'x-cg-pro-api-key': apiKey,
+      r'x_cg_demo_api_key': apiKey,
       r'vs_currency': vs_currency,
       r'per_page': per_page,
       r'page': page,
@@ -69,6 +70,44 @@ class _CoinsRemoteService implements CoinsRemoteService {
       errorLogger?.logError(e, s, _options);
       rethrow;
     }
+    return _value;
+  }
+
+  @override
+  Future<dynamic> coinMarketChart(
+    String id,
+    String apiKey, {
+    String vs_currency = 'usd',
+    int days = 1,
+    String interval = 'daily',
+  }) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'x_cg_demo_api_key': apiKey,
+      r'vs_currency': vs_currency,
+      r'days': days,
+      r'interval': interval,
+    };
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<dynamic>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '/coins/${id}/market_chart',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch(_options);
+    final _value = _result.data;
     return _value;
   }
 

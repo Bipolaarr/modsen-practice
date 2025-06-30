@@ -10,7 +10,6 @@
 part of 'app_router.dart';
 
 abstract class _$AppRouter extends RootStackRouter {
-  // ignore: unused_element
   _$AppRouter();
 
   @override
@@ -18,7 +17,7 @@ abstract class _$AppRouter extends RootStackRouter {
     HomeRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: HomePage(),
+        child: const HomePage(),
       );
     },
     SplashRoute.name: (routeData) {
@@ -37,6 +36,17 @@ abstract class _$AppRouter extends RootStackRouter {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const SignInPage(),
+      );
+    },
+    CoinRoute.name: (routeData) {
+      final args = routeData.argsAs<CoinRouteArgs>();
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: CoinPage(
+          key: args.key,
+          coinId: args.coinId,
+          initialCoin: args.initialCoin,
+        ),
       );
     },
   };
@@ -96,4 +106,46 @@ class SignInRoute extends PageRouteInfo<void> {
   static const String name = 'SignInRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [CoinPage]
+class CoinRoute extends PageRouteInfo<CoinRouteArgs> {
+  CoinRoute({
+    Key? key,
+    required String coinId,
+    required CoinModel initialCoin,
+    List<PageRouteInfo>? children,
+  }) : super(
+          CoinRoute.name,
+          args: CoinRouteArgs(
+            key: key,
+            coinId: coinId,
+            initialCoin: initialCoin,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'CoinRoute';
+
+  static const PageInfo<CoinRouteArgs> page = PageInfo<CoinRouteArgs>(name);
+}
+
+class CoinRouteArgs {
+  const CoinRouteArgs({
+    this.key,
+    required this.coinId,
+    required this.initialCoin,
+  });
+
+  final Key? key;
+
+  final String coinId;
+
+  final CoinModel initialCoin;
+
+  @override
+  String toString() {
+    return 'CoinRouteArgs{key: $key, coinId: $coinId, initialCoin: $initialCoin}';
+  }
 }
