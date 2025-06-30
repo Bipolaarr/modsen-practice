@@ -1,4 +1,3 @@
-// features/home/data/sources/coins_remote_service.dart
 import 'package:dio/dio.dart';
 import 'package:practice_app/features/home/data/models/coin_model.dart';
 import 'package:retrofit/retrofit.dart';

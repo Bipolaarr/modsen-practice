@@ -1,3 +1,4 @@
+// features/home/presentation/screens/home_page.dart
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +7,7 @@ import 'package:practice_app/core/consts/constants.dart';
 import 'package:practice_app/core/routing/app_router.dart';
 import 'package:practice_app/core/stuff/service_locator.dart';
 import 'package:practice_app/features/auth/domain/usecases/logout_usecase.dart';
+import 'package:practice_app/features/home/data/models/coin_model.dart';
 import 'package:practice_app/features/home/domain/repositories/coins_repository.dart';
 import 'package:practice_app/features/home/presentation/bloc/home_page_cubit.dart';
 import 'package:practice_app/features/home/presentation/bloc/home_page_state.dart';
@@ -14,11 +16,13 @@ import 'package:practice_app/features/home/presentation/widgets/coin_tile.dart';
 @RoutePage()
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
+  
+  final double _scrollThreshold = 200.0;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => HomeCubit(serviceLocator<CoinsRepository>())..loadCoins(),
+      create: (context) => HomeCubit(serviceLocator<CoinsRepository>())..loadInitialCoins(),
       child: Scaffold(
         backgroundColor: Colors.black,
         appBar: AppBar(
@@ -60,7 +64,7 @@ class HomePage extends StatelessWidget {
         body: BlocBuilder<HomeCubit, HomeState>(
           builder: (context, state) {
             if (state is HomeInitial) {
-              return buildInitialPlaceholder();
+              return _buildInitialPlaceholder();
             }
             
             if (state is HomeLoading) {
@@ -70,24 +74,74 @@ class HomePage extends StatelessWidget {
             }
             
             if (state is HomeError) {
-              return buildErrorPlaceholder(context, state.message);
+              return _buildErrorPlaceholder(context, state.message);
             }
             
-            if (state is HomeLoaded) {
-              return ListView.builder(
-                itemCount: state.coins.length,
-                itemBuilder: (context, index) => CoinTile(coin: state.coins[index]),
-              );
+            List<CoinModel> coins = [];
+            bool isLoadingMore = false;
+            bool hasReachedMax = false;
+            
+            if (state is HomeLoadingMore) {
+              coins = state.coins;
+              isLoadingMore = true;
+            }
+            else if (state is HomeLoaded) {
+              coins = state.coins;
+              hasReachedMax = state.hasReachedMax;
             }
             
-            return buildInitialPlaceholder();
+            return NotificationListener<ScrollNotification>(
+              onNotification: (notification) {
+                if (notification is ScrollEndNotification) {
+                  final metrics = notification.metrics;
+                  if (metrics.maxScrollExtent - metrics.pixels <= _scrollThreshold) {
+                    context.read<HomeCubit>().loadMoreCoins();
+                  }
+                }
+                return false;
+              },
+              child: _buildCoinList(
+                coins: coins,
+                isLoadingMore: isLoadingMore,
+                hasReachedMax: hasReachedMax
+              ),
+            );
           },
         ),
       ),
     );
   }
 
-  Widget buildInitialPlaceholder() {
+  Widget _buildCoinList({
+    required List<CoinModel> coins,
+    bool isLoadingMore = false,
+    bool hasReachedMax = false
+  }) {
+    return ListView.builder(
+      itemCount: coins.length + (isLoadingMore || !hasReachedMax ? 1 : 0),
+      itemBuilder: (context, index) {
+        if (index < coins.length) {
+          return CoinTile(coin: coins[index]);
+        } else {
+          return Padding(
+            padding: const EdgeInsets.symmetric(vertical: 16.0),
+            child: Center(
+              child: isLoadingMore 
+                ? const CircularProgressIndicator(color: Constants.formBlueColor)
+                : IconButton(
+                    icon: const Icon(Icons.refresh, color: Colors.white),
+                    onPressed: () {
+                      context.read<HomeCubit>().loadMoreCoins();
+                    },
+                  ),
+            ),
+          );
+        }
+      },
+    );
+  }
+
+  Widget _buildInitialPlaceholder() {
     return const Center(
       child: Text(
         'Loading cryptocurrency data...',
@@ -96,7 +150,7 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget buildErrorPlaceholder(BuildContext context, String message) {
+  Widget _buildErrorPlaceholder(BuildContext context, String message) {
     return Center(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -123,7 +177,9 @@ class HomePage extends StatelessWidget {
               height: 50,
               width: 187,
               child: ElevatedButton(
-                onPressed: () => context.read<HomeCubit>().loadCoins(),
+                onPressed: () {
+                  context.read<HomeCubit>().loadInitialCoins();
+                },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Constants.formBlueColor,
                   shape: RoundedRectangleBorder(
@@ -145,5 +201,4 @@ class HomePage extends StatelessWidget {
       ),
     );
   }
-
 }

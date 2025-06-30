@@ -194,7 +194,7 @@ class _CoinDashboardView extends StatelessWidget {
               "Portfolio",
               style: TextStyle(
                 color: Colors.grey,
-                fontSize: 16,
+                fontSize: 14,
                 letterSpacing: -0.5
               ),
             ),
@@ -202,7 +202,7 @@ class _CoinDashboardView extends StatelessWidget {
               "12,43 ${coin.symbol?.toUpperCase() ?? ''}",
               style: TextStyle(
                 color: Colors.white,
-                fontSize: 16,
+                fontSize: 14,
                 fontWeight: FontWeight.bold,
                 letterSpacing: -0.5
               ),
@@ -216,7 +216,7 @@ class _CoinDashboardView extends StatelessWidget {
               "Market Value",
               style: TextStyle(
                 color: Colors.grey,
-                fontSize: 16,
+                fontSize: 14,
                 letterSpacing: -0.5
               ),
             ),
@@ -224,7 +224,7 @@ class _CoinDashboardView extends StatelessWidget {
               "\$${_formatNumber(coinValue)}", // FIXED: Use formatted number
               style: TextStyle(
                 color: Colors.white,
-                fontSize: 16,
+                fontSize: 14,
                 fontWeight: FontWeight.bold,
                 letterSpacing: -0.5
               ),
@@ -238,7 +238,7 @@ class _CoinDashboardView extends StatelessWidget {
               "Net Cost",
               style: TextStyle(
                 color: Colors.grey,
-                fontSize: 16,
+                fontSize: 14,
                 letterSpacing: -0.5
               ),
             ),
@@ -246,7 +246,7 @@ class _CoinDashboardView extends StatelessWidget {
               "\$${_formatNumber(netCost)}", // FIXED: Use formatted number
               style: TextStyle(
                 color: Colors.white,
-                fontSize: 16,
+                fontSize: 14,
                 fontWeight: FontWeight.bold,
                 letterSpacing: -0.5
               ),
@@ -389,25 +389,40 @@ class _CoinDashboardView extends StatelessWidget {
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             crossAxisCount: 2,
-            childAspectRatio: 3,
-            crossAxisSpacing: 40,
-            mainAxisSpacing: 15,
+            childAspectRatio: 3, // Reduced aspect ratio for taller cells
+            crossAxisSpacing: 10,
+            mainAxisSpacing: 16, // Reduced vertical spacing
             children: [
               _buildStatItem(
                 'Market Cap',
-                '${_formatCount(marketCapInCoins)} ${coin.symbol?.toUpperCase() ?? ''}'
+                '${_formatCount(marketCapInCoins)} ${coin.symbol?.toUpperCase() ?? ''}',
+                maxLines: 2, // Allow text to wrap
               ),
-              _buildStatItem('Volume (24h)', '\$${_formatNumber(coin.totalVolume?.toDouble() ?? 0)}'),
+              _buildStatItem(
+                'Volume (24h)', 
+                '\$${_formatNumber(coin.totalVolume?.toDouble() ?? 0)}',
+                maxLines: 2,
+              ),
               _buildStatItem(
                 'Available Supply', 
-                '${_formatCount(coin.circulatingSupply ?? 0)} ${coin.symbol?.toUpperCase() ?? ''}'
+                '${_formatCount(coin.circulatingSupply ?? 0)} ${coin.symbol?.toUpperCase() ?? ''}',
+                maxLines: 2,
               ),
               _buildStatItem(
                 'Total Supply', 
-                '${_formatCount(coin.totalSupply ?? 0)} ${coin.symbol?.toUpperCase() ?? ''}'
+                '${_formatCount(coin.totalSupply ?? 0)} ${coin.symbol?.toUpperCase() ?? ''}',
+                maxLines: 2,
               ),
-              _buildStatItem('Low (24h)', '\$${_formatNumber(coin.low24h ?? 0)}'),
-              _buildStatItem('High (24h)', '\$${_formatNumber(coin.high24h ?? 0)}'),
+              _buildStatItem(
+                'Low (24h)', 
+                '\$${_formatNumber(coin.low24h ?? 0)}',
+                maxLines: 1,
+              ),
+              _buildStatItem(
+                'High (24h)', 
+                '\$${_formatNumber(coin.high24h ?? 0)}',
+                maxLines: 1,
+              ),
             ],
           ),
         ],
@@ -415,27 +430,31 @@ class _CoinDashboardView extends StatelessWidget {
     );
   }
 
-  Widget _buildStatItem(String title, String value) {
+  Widget _buildStatItem(String title, String value, {int maxLines = 1}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
           title,
           style: TextStyle(
             color: Colors.grey,
-            fontSize: 16,
-            letterSpacing: -0.5
+            fontSize: 14, 
+            letterSpacing: -0.5,
           ),
-        ),
-        const SizedBox(height: 4),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+        ), 
         Text(
           value,
           style: const TextStyle(
             color: Colors.white,
-            fontSize: 16,
+            fontSize: 14,
             fontWeight: FontWeight.bold,
-            letterSpacing: -1
+            letterSpacing: -0.5,
           ),
+          maxLines: maxLines,
+          overflow: TextOverflow.ellipsis,
         ),
       ],
     );

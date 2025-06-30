@@ -9,7 +9,15 @@ class HomeLoading extends HomeState {}
 
 class HomeLoaded extends HomeState {
   final List<CoinModel> coins;
-  HomeLoaded(this.coins);
+  final bool hasReachedMax;
+  
+  HomeLoaded({required this.coins, required this.hasReachedMax});
+}
+
+class HomeLoadingMore extends HomeState {
+  final List<CoinModel> coins;
+  
+  HomeLoadingMore({required this.coins});
 }
 
 class HomeError extends HomeState {
