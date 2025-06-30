@@ -16,7 +16,6 @@ class CoinsRepositoryImplementation implements CoinsRepository {
     PriceChangePercentageTimeframes timeframe = PriceChangePercentageTimeframes.twentyFourHours
   }) async {
     try {
-      // Directly return the response without mapping
       return await _source.coinsListWithMarketData(
         _apiKey,
         page: page,

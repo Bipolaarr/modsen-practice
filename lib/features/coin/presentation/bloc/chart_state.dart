@@ -18,7 +18,7 @@ class ChartLoading extends ChartState {
 class ChartLoaded extends ChartState {
   final List<Map<String, dynamic>> chartData;
   final int days;
-  final String timeframe;  // Added timeframe
+  final String timeframe;  
   final bool isPositive;
 
   const ChartLoaded({

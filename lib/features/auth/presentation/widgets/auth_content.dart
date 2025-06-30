@@ -96,138 +96,146 @@ class AuthContent extends StatelessWidget {
             ],
           ),
           body: SafeArea(
-            // minimum: EdgeInsets.only(bottom: 25),
             child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(height: 10),
-                      Text(
-                        mainLabelText, 
-                        style: const TextStyle(
-                          color: Colors.white, 
-                          fontWeight: FontWeight.bold,
-                          fontSize: 36,
-                          letterSpacing: -2,
+                Expanded(
+                  child: SingleChildScrollView(
+                    padding: const EdgeInsets.only(bottom: 20),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const SizedBox(height: 10),
+                              Text(
+                                mainLabelText, 
+                                style: const TextStyle(
+                                  color: Colors.white, 
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 36,
+                                  letterSpacing: -2,
+                                ),
+                                softWrap: true,
+                                maxLines: 2,
+                                overflow: TextOverflow.visible,
+                              ),
+                            ],
+                          ),
                         ),
-                        softWrap: true,
-                        maxLines: 2,
-                        overflow: TextOverflow.visible,
-                      ),
-                    ],
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: BlocBuilder<AuthCubit, AuthState>(
+                            builder: (context, state) {
+                              final cubit = context.read<AuthCubit>();
+                              return TextField(
+                                onChanged: cubit.updateEmail,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  letterSpacing: -0.5
+                                ),
+                                cursorColor: Constants.formBlueColor,
+                                decoration: InputDecoration(
+                                  labelText: "Enter your email address",
+                                  labelStyle: const TextStyle(
+                                    fontSize: 16,
+                                    letterSpacing: -0.5,
+                                    color: Colors.grey
+                                  ),
+                                  floatingLabelBehavior: FloatingLabelBehavior.never,
+                                  errorStyle: const TextStyle(color: Colors.red),
+                                  enabledBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: !state.isEmailValid 
+                                          ? Colors.red 
+                                          : Colors.grey,
+                                    )
+                                  ),
+                                  focusedBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: state.isEmailValid 
+                                          ? Colors.white 
+                                          : Colors.red,
+                                    )
+                                  ),
+                                ),
+                              );
+                            }
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: BlocBuilder<AuthCubit, AuthState>(
+                            builder: (context, state) {
+                              final cubit = context.read<AuthCubit>();
+                              return TextField(
+                                onChanged: cubit.updatePassword,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  letterSpacing: -0.5
+                                ),
+                                cursorColor: Constants.formBlueColor,
+                                obscureText: true,
+                                decoration: InputDecoration(
+                                  labelText: "Enter your password",
+                                  labelStyle: const TextStyle(
+                                    fontSize: 16,
+                                    letterSpacing: -0.5,
+                                    color: Colors.grey
+                                  ),
+                                  floatingLabelBehavior: FloatingLabelBehavior.never,
+                                  enabledBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: !state.isPasswordValid 
+                                          ? Colors.red 
+                                          : Colors.grey,
+                                    )
+                                  ),
+                                  focusedBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: state.isPasswordValid 
+                                          ? Colors.white 
+                                          : Colors.red,
+                                    )
+                                  ),
+                                  errorText: state.showError && !state.isPasswordValid
+                                      ? ''
+                                      : null,
+                                ),
+                              );
+                            }
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                      ],
+                    ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: BlocBuilder<AuthCubit, AuthState>(
-                    builder: (context, state) {
-                      final cubit = context.read<AuthCubit>();
-                      return TextField(
-                        onChanged: cubit.updateEmail,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                          letterSpacing: -0.5
-                        ),
-                        cursorColor: Constants.formBlueColor,
-                        decoration: InputDecoration(
-                          labelText: "Enter your email address",
-                          labelStyle: const TextStyle(
-                            fontSize: 16,
-                            letterSpacing: -0.5,
-                            color: Colors.grey
-                          ),
-                          floatingLabelBehavior: FloatingLabelBehavior.never,
-                          errorStyle: const TextStyle(color: Colors.red),
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(
-                              color: !state.isEmailValid 
-                                  ? Colors.red 
-                                  : Colors.grey,
-                            )
-                          ),
-                          focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(
-                              color: state.isEmailValid 
-                                  ? Colors.white 
-                                  : Colors.red,
-                            )
-                          ),
-                        ),
-                      );
-                    }
-                  ),
-                ),
-                const SizedBox(height: 10),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: BlocBuilder<AuthCubit, AuthState>(
-                    builder: (context, state) {
-                      final cubit = context.read<AuthCubit>();
-                      return TextField(
-                        onChanged: cubit.updatePassword,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                          letterSpacing: -0.5
-                        ),
-                        cursorColor: Constants.formBlueColor,
-                        obscureText: true,
-                        decoration: InputDecoration(
-                          labelText: "Enter your password",
-                          labelStyle: const TextStyle(
-                            fontSize: 16,
-                            letterSpacing: -0.5,
-                            color: Colors.grey
-                          ),
-                          floatingLabelBehavior: FloatingLabelBehavior.never,
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(
-                              color: !state.isPasswordValid 
-                                  ? Colors.red 
-                                  : Colors.grey,
-                            )
-                          ),
-                          focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(
-                              color: state.isPasswordValid 
-                                  ? Colors.white 
-                                  : Colors.red,
-                            )
-                          ),
-                          errorText: state.showError && !state.isPasswordValid
-                              ? ''
-                              : null,
-                        ),
-                      );
-                    }
-                  ),
-                ),
-                const Spacer(),
                 if (showTerms) ...[
-                  const Center(
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 20),
-                      child: Text(
-                        "By signing up you accept the Terms of Service & Privacy Policy.",
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Colors.grey,
-                          letterSpacing: -0.5
-                        ),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    child: Text(
+                      "By signing up you accept the Terms of Service & Privacy Policy.",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.grey,
+                        letterSpacing: -0.5
                       ),
                     ),
                   ),
+                  const SizedBox(height: 10),
                 ],
-                const SizedBox(height: 10),
-                SafeArea(
-                  bottom: true,
-                  top: false,
+                Padding(
+                  padding: EdgeInsets.only(
+                    bottom: MediaQuery.of(context).viewInsets.bottom > 0 ? 0 : 25,
+                  ),
                   child: SizedBox(
                     width: double.infinity,
                     height: 60,

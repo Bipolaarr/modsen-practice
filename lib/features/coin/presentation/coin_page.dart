@@ -171,7 +171,6 @@ class _CoinDashboardView extends StatelessWidget {
     );
   }
 
-  // NEW: Helper to format counts (removes .00 if needed)
   String _formatCount(double num) {
     final formatted = _formatNumber(num);
     return formatted.endsWith('.00') 
@@ -221,7 +220,7 @@ class _CoinDashboardView extends StatelessWidget {
               ),
             ),
             Text(
-              "\$${_formatNumber(coinValue)}", // FIXED: Use formatted number
+              "\$${_formatNumber(coinValue)}", 
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 14,
@@ -243,7 +242,7 @@ class _CoinDashboardView extends StatelessWidget {
               ),
             ),
             Text(
-              "\$${_formatNumber(netCost)}", // FIXED: Use formatted number
+              "\$${_formatNumber(netCost)}",
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 14,
@@ -389,14 +388,14 @@ class _CoinDashboardView extends StatelessWidget {
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             crossAxisCount: 2,
-            childAspectRatio: 3, // Reduced aspect ratio for taller cells
+            childAspectRatio: 3, 
             crossAxisSpacing: 10,
-            mainAxisSpacing: 16, // Reduced vertical spacing
+            mainAxisSpacing: 16, 
             children: [
               _buildStatItem(
                 'Market Cap',
                 '${_formatCount(marketCapInCoins)} ${coin.symbol?.toUpperCase() ?? ''}',
-                maxLines: 2, // Allow text to wrap
+                maxLines: 2, 
               ),
               _buildStatItem(
                 'Volume (24h)', 

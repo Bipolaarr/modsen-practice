@@ -51,7 +51,5 @@ class MainApp extends StatelessWidget {
   }
 }
 
-// ask bout safearea minimum: in auth_content (line above keyboard appears) ???
-// placeholder not centered for some reason ?? (fine on se not fine on big screens?)
 
 
