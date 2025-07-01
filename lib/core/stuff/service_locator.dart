@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
 import 'package:practice_app/core/net/dio_client.dart';
@@ -18,6 +19,10 @@ import 'package:practice_app/features/coin/data/repositories/chart_repo_implemen
 import 'package:practice_app/features/coin/domain/repositories/chart_repository.dart';
 import 'package:practice_app/features/coin/presentation/bloc/chart_cubit.dart';
 import 'package:practice_app/features/coin/presentation/bloc/coin_data_cubit.dart';
+import 'package:practice_app/features/coin/presentation/bloc/favourites_cubit.dart';
+import 'package:practice_app/features/favourites/data/repositories/favourites_repository_impl.dart';
+import 'package:practice_app/features/favourites/data/services/favourite_coins_service.dart';
+import 'package:practice_app/features/favourites/domain/repositories/favourites_repository.dart';
 import 'package:practice_app/features/home/data/repositories/coins_repo_impl.dart';
 import 'package:practice_app/features/home/data/sources/coins_remote_service.dart';
 import 'package:practice_app/features/home/domain/repositories/coins_repository.dart';
@@ -41,13 +46,16 @@ Future<void> configureDependencies() async {
 
   serviceLocator.registerSingleton(() => DioClient());
   serviceLocator.registerSingleton<Logger>(logger);
-  
+  serviceLocator.registerSingleton<FirebaseAuth>(FirebaseAuth.instance);
+
   serviceLocator.registerSingleton<AbstractFirebaseRemoteService>(FirebaseRemoteService());
   serviceLocator.registerSingleton<AuthRepository>(AuthRepoImplementation());
   serviceLocator.registerSingleton<AbstractIsarLocalService>(isarService);
   serviceLocator.registerSingleton<BiometricsRepository>(BiometricsRepoImplementation());
   serviceLocator.registerSingleton<CoinsRepository>(CoinsRepositoryImplementation(CoinsRemoteService(Dio()), _apiKey!));
   serviceLocator.registerSingleton<ChartRepository>(ChartRepositoryImpl(remoteService: CoinsRemoteService(Dio()), apiKey: _apiKey));
+  serviceLocator.registerSingleton<AbstractFavouriteCoinsService>(FavoritesService(isarService.isar, serviceLocator<FirebaseAuth>()));
+  serviceLocator.registerSingleton<FavouritesRepository>(FavouritesRepositoryImpl());
 
   serviceLocator.registerFactory(
     () => CoinDataCubit(serviceLocator<CoinsRepository>()),
@@ -56,6 +64,13 @@ Future<void> configureDependencies() async {
   serviceLocator.registerFactory(
     () => ChartCubit(serviceLocator<ChartRepository>()),
   );
+
+  serviceLocator.registerFactoryParam<FavouriteCubit, String, void>(
+  (coinId, _) => FavouriteCubit(
+    repository: serviceLocator<FavouritesRepository>(),
+    coinId: coinId,
+  ),
+);
 
   serviceLocator.registerSingleton<SignInUsecase>(SignInUsecase());
   serviceLocator.registerSingleton<SignUpUsecase>(SignUpUsecase());

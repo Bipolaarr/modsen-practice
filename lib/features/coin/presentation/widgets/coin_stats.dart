@@ -34,8 +34,8 @@ class MarketStats extends StatelessWidget {
     crossAxisAlignment: CrossAxisAlignment.start,
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
-      Text(title, style: const TextStyle(color: Colors.grey, letterSpacing: -0.5, fontSize: 16)), 
-      Text(value, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, letterSpacing: -0.5, fontSize: 16))
+      Text(title, style: const TextStyle(color: Colors.grey, letterSpacing: -0.5, fontSize: 14)), 
+      Text(value, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, letterSpacing: -0.5, fontSize: 14))
     ],
   );
 }

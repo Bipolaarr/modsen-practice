@@ -1,6 +1,7 @@
 // features/home/presentation/screens/coin_dashboard/coin_dashboard.dart
 import 'package:auto_route/auto_route.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:practice_app/core/consts/constants.dart';
@@ -9,6 +10,8 @@ import 'package:practice_app/features/coin/presentation/bloc/chart_cubit.dart';
 import 'package:practice_app/features/coin/presentation/bloc/chart_state.dart';
 import 'package:practice_app/features/coin/presentation/bloc/coin_data_cubit.dart';
 import 'package:practice_app/features/coin/presentation/bloc/coin_data_state.dart';
+import 'package:practice_app/features/coin/presentation/bloc/favourite_state.dart';
+import 'package:practice_app/features/coin/presentation/bloc/favourites_cubit.dart';
 import 'package:practice_app/features/coin/presentation/widgets/coin_chart.dart';
 import 'package:practice_app/features/coin/presentation/widgets/coin_header.dart';
 import 'package:practice_app/features/coin/presentation/widgets/coin_portfolio.dart';
@@ -36,6 +39,9 @@ class CoinPage extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => serviceLocator<ChartCubit>()..loadChart(coinId, '1D'),
+        ),
+        BlocProvider(
+          create: (context) => serviceLocator<FavouriteCubit>(param1: coinId),
         ),
       ],
       child: _CoinDashboardView(initialCoin: initialCoin),
@@ -82,9 +88,36 @@ class _CoinDashboardView extends StatelessWidget {
               ),
             ),
             leading: IconButton(
-              icon: const Icon(Icons.arrow_back, color: Colors.white),
+              icon: const Icon(CupertinoIcons.arrow_left, color: Colors.white),
               onPressed: () => context.router.pop(),
             ),
+            actions: [
+              BlocBuilder<FavouriteCubit, FavouriteState>(
+                builder: (context, state) {
+                  final isFavorite = state is FavouriteStatusLoaded && state.isFavorite;
+                  final isLoading = state is FavouriteLoading;
+
+                  return IconButton(
+                    icon: isLoading
+                        ? const SizedBox(
+                            width: 24,
+                            height: 24,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              color: Constants.formBlueColor,
+                            ),
+                          )
+                        : Icon(
+                            isFavorite ? CupertinoIcons.star_fill : CupertinoIcons.star,
+                            color: Colors.white,
+                          ),
+                    onPressed: isLoading
+                        ? null
+                        : () => context.read<FavouriteCubit>().toggleFavorite(),
+                  );
+                },
+              ),
+            ],
           ),
           body: SafeArea(
             child: ListView(
