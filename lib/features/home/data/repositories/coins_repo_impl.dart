@@ -44,4 +44,25 @@ class CoinsRepositoryImplementation implements CoinsRepository {
     ];
     return values[timeframe.index];
   }
+  
+  @override
+  Future<List<CoinModel>> getCoinsByIds(List<String> coinIds) async {
+    try {
+      if (coinIds.isEmpty) return [];
+      
+      return await _source.getCoinsByIds(
+        _apiKey,
+        ids: coinIds.join(','),
+        per_page: coinIds.length,
+      );
+    } on DioException catch (e) {
+      if (e.type == DioExceptionType.connectionTimeout ||
+          e.type == DioExceptionType.receiveTimeout) {
+        throw TimeoutException();
+      }
+      rethrow;
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

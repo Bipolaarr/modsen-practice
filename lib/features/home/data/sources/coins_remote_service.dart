@@ -26,4 +26,14 @@ abstract class CoinsRemoteService {
     @Query('days') int days = 1,
     @Query('interval') String interval = 'daily',
   });
+
+  @GET('/coins/markets')
+  Future<List<CoinModel>> getCoinsByIds(
+    @Query('x_cg_demo_api_key') String apiKey, {
+    @Query('vs_currency') String vs_currency = 'usd',
+    @Query('ids') required String ids,
+    @Query('per_page') int per_page = 250,
+    @Query('price_change_percentage') String priceChangePercentageTimeframe = '24h',
+  });
+
 }

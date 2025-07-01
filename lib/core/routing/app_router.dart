@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:practice_app/features/auth/presentation/pages/signin_page.dart';
 import 'package:practice_app/features/auth/presentation/pages/signup_page.dart';
 import 'package:practice_app/features/coin/presentation/pages/coin_page.dart';
+import 'package:practice_app/features/favourites/presentation/pages/favourite_coins_page.dart';
 import 'package:practice_app/features/home/data/models/coin_model.dart';
 import 'package:practice_app/features/home/presentation/pages/home_page.dart';
 import 'package:practice_app/features/splash/presentation/pages/splash_page.dart';
@@ -19,7 +20,8 @@ class AppRouter extends _$AppRouter {
     AutoRoute(page: SignInRoute.page),
     AutoRoute(page: SignUpRoute.page),
     AutoRoute(page: HomeRoute.page),
-    AutoRoute(page: CoinRoute.page)
+    AutoRoute(page: CoinRoute.page),
+    AutoRoute(page: FavouriteCoinsRoute.page)
 
   ];
 

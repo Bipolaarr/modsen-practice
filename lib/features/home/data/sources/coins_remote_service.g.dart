@@ -111,6 +111,53 @@ class _CoinsRemoteService implements CoinsRemoteService {
     return _value;
   }
 
+  @override
+  Future<List<CoinModel>> getCoinsByIds(
+    String apiKey, {
+    String vs_currency = 'usd',
+    required String ids,
+    int per_page = 250,
+    String priceChangePercentageTimeframe = '24h',
+  }) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'x_cg_demo_api_key': apiKey,
+      r'vs_currency': vs_currency,
+      r'ids': ids,
+      r'per_page': per_page,
+      r'price_change_percentage': priceChangePercentageTimeframe,
+    };
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<List<CoinModel>>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '/coins/markets',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<List<dynamic>>(_options);
+    late List<CoinModel> _value;
+    try {
+      _value = _result.data!
+          .map((dynamic i) => CoinModel.fromJson(i as Map<String, dynamic>))
+          .toList();
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {
     if (T != dynamic &&
         !(requestOptions.responseType == ResponseType.bytes ||

@@ -11,7 +11,7 @@ part of 'app_router.dart';
 
 abstract class _$AppRouter extends RootStackRouter {
   // ignore: unused_element
-  _$AppRouter({super.navigatorKey});
+  _$AppRouter();
 
   @override
   final Map<String, PageFactory> pagesMap = {
@@ -48,6 +48,12 @@ abstract class _$AppRouter extends RootStackRouter {
           coinId: args.coinId,
           initialCoin: args.initialCoin,
         ),
+      );
+    },
+    FavouriteCoinsRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const FavouriteCoinsPage(),
       );
     },
   };
@@ -149,4 +155,18 @@ class CoinRouteArgs {
   String toString() {
     return 'CoinRouteArgs{key: $key, coinId: $coinId, initialCoin: $initialCoin}';
   }
+}
+
+/// generated route for
+/// [FavouriteCoinsPage]
+class FavouriteCoinsRoute extends PageRouteInfo<void> {
+  const FavouriteCoinsRoute({List<PageRouteInfo>? children})
+      : super(
+          FavouriteCoinsRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'FavouriteCoinsRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
 }

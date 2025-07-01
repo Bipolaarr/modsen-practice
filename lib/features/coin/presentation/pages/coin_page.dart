@@ -38,7 +38,7 @@ class CoinPage extends StatelessWidget {
           create: (context) => serviceLocator<CoinDataCubit>()..fetchCoinData(coinId),
         ),
         BlocProvider(
-          create: (context) => serviceLocator<ChartCubit>()..loadChart(coinId, '1D'),
+          create: (context) => serviceLocator<ChartCubit>()..loadChart(coinId, '1M'),
         ),
         BlocProvider(
           create: (context) => serviceLocator<FavouriteCubit>(param1: coinId),

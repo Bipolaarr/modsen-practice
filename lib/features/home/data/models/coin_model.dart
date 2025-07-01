@@ -3,8 +3,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'coin_model.g.dart';
 
 @JsonSerializable()
-class CoinModel{
-  
+class CoinModel {
   String? id;
   String? symbol;
   String? name;
@@ -47,24 +46,44 @@ class CoinModel{
   double? atlChangePercentage;
   @JsonKey(name: "atl_date")
   String? atlDate;
-  Map<String,dynamic>? roi;
+  Map<String, dynamic>? roi;
   @JsonKey(name: "lastUpdated")
   String? lastUpdated;
   String? platforms;
 
-
-  CoinModel(this.id, this.symbol, this.name, this.image, this.currentPrice,
-      this.marketCap, this.marketCapRank, this.fullyDilutedValuation,
-      this.totalVolume, this.high24h, this.low24h, this.priceChange24h,
-      this.priceChangePercentage24h, this.marketCapChange24h,
-      this.marketCapChangePercentage24h, this.circulatingSupply,
-      this.totalSupply, this.maxSupply, this.ath, this.athChangePercentage,
-      this.athDate, this.atl, this.atlChangePercentage, this.atlDate, this.roi,
-      this.lastUpdated, this.platforms);
+  // Fixed constructor - removed the duplicate id parameter
+  CoinModel(
+    this.id,
+    this.symbol,
+    this.name,
+    this.image,
+    this.currentPrice,
+    this.marketCap,
+    this.marketCapRank,
+    this.fullyDilutedValuation,
+    this.totalVolume,
+    this.high24h,
+    this.low24h,
+    this.priceChange24h,
+    this.priceChangePercentage24h,
+    this.marketCapChange24h,
+    this.marketCapChangePercentage24h,
+    this.circulatingSupply,
+    this.totalSupply,
+    this.maxSupply,
+    this.ath,
+    this.athChangePercentage,
+    this.athDate,
+    this.atl,
+    this.atlChangePercentage,
+    this.atlDate,
+    this.roi,
+    this.lastUpdated,
+    this.platforms,
+  );
 
   factory CoinModel.fromJson(Map<String, dynamic> json) =>
       _$CoinModelFromJson(json);
 
   Map<String, dynamic> toJson() => _$CoinModelToJson(this);
-
 }
